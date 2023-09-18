@@ -2,7 +2,7 @@
 # Hi, I'm Mohammadelarief! 👋
 
 
-# Akademik
+# SIAKAD
 
 Sistem Informasi Akademik Multi Sekolah
 
