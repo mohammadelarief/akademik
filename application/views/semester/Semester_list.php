@@ -2,7 +2,7 @@
   <div class="col-xs-12">
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title">Periode</h3>
+        <h3 class="box-title">Semester</h3>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
             <i class="fa fa-minus"></i></button>
@@ -15,9 +15,9 @@
 
         <form id="myform" method="post" onsubmit="return false">
 
-          <!-- <div class="row" style="margin-bottom: 10px">
+          <div class="row" style="margin-bottom: 10px">
             <div class="col-xs-12 col-md-4">
-              <?php echo anchor(site_url('periode/create'), '<i class="fa fa-plus"></i> Create', 'class="btn bg-purple"'); ?>
+              <?php echo anchor(site_url('semester/create'), '<i class="fa fa-plus"></i> Create', 'class="btn bg-purple"'); ?>
             </div>
             <div class="col-xs-12 col-md-4 text-center">
               <div style="margin-top: 4px" id="message">
@@ -27,23 +27,22 @@
             <div class="col-xs-12 col-md-4 text-right">
 
             </div>
-          </div> -->
+          </div>
           <div class="table-responsive">
             <table class="table table-bordered table-striped" id="mytable" style="width:100%">
               <thead>
                 <tr>
                   <th width=""></th>
                   <th width="10px">No</th>
-                  <th>Idperiode</th>
-                  <!-- <th>Parent</th> -->
-                  <th>Kalender</th>
-                  <!-- <th>Kode</th> -->
-                  <th>Tglmulai</th>
-                  <th>Tglakhir</th>
+                  <!-- <th>Idsemester</th> -->
+                  <th>Nama Semester</th>
+                  <th>Periode</th>
                   <!-- <th>Keterangan</th> -->
-                  <th>Aktif</th>
+                  <th>Tanggal Awal</th>
+                  <th>Tanggal Akhir</th>
+                  <th>Status</th>
 
-                  <!-- <th width="80px">Action</th> -->
+                  <th width="80px">Action</th>
                 </tr>
               </thead>
 

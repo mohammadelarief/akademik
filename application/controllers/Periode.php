@@ -83,7 +83,7 @@ class Periode extends CI_Controller
         $data['crumb'] = [
             'Dashboard' => '',
         ];
-
+        $data['code_js'] = 'periode/js';
         $data['page'] = 'periode/Periode_form';
         $this->load->view('template/backend', $data);
     }
@@ -100,8 +100,8 @@ class Periode extends CI_Controller
                 'parent' => $this->input->post('parent', TRUE),
                 'kalender' => $this->input->post('kalender', TRUE),
                 'kode' => $this->input->post('kode', TRUE),
-                'tglmulai' => $this->input->post('tglmulai', TRUE),
-                'tglakhir' => $this->input->post('tglakhir', TRUE),
+                'tglmulai' => date('Y-m-d', strtotime($this->input->post('tglmulai', TRUE))),
+                'tglakhir' => date('Y-m-d', strtotime($this->input->post('tglakhir', TRUE))),
                 'keterangan' => $this->input->post('keterangan', TRUE),
                 'aktif' => $this->input->post('aktif', TRUE),
             );
@@ -155,8 +155,8 @@ class Periode extends CI_Controller
                 'parent' => $this->input->post('parent', TRUE),
                 'kalender' => $this->input->post('kalender', TRUE),
                 'kode' => $this->input->post('kode', TRUE),
-                'tglmulai' => $this->input->post('tglmulai', TRUE),
-                'tglakhir' => $this->input->post('tglakhir', TRUE),
+                'tglmulai' => date('Y-m-d', strtotime($this->input->post('tglmulai', TRUE))),
+                'tglakhir' => date('Y-m-d', strtotime($this->input->post('tglakhir', TRUE))),
                 'keterangan' => $this->input->post('keterangan', TRUE),
                 'aktif' => $this->input->post('aktif', TRUE),
             );
@@ -200,7 +200,7 @@ class Periode extends CI_Controller
         $this->form_validation->set_rules('kode', 'kode', 'trim|required');
         $this->form_validation->set_rules('tglmulai', 'tglmulai', 'trim|required');
         $this->form_validation->set_rules('tglakhir', 'tglakhir', 'trim|required');
-        $this->form_validation->set_rules('keterangan', 'keterangan', 'trim|required');
+        $this->form_validation->set_rules('keterangan', 'keterangan', 'trim');
         $this->form_validation->set_rules('aktif', 'aktif', 'trim|required');
 
         $this->form_validation->set_rules('id', 'id', 'trim');
