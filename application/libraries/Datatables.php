@@ -517,8 +517,7 @@
         if(is_string($result))
         {
           static $jsonReplaces = array(array('\', \'/', '
-', '	', '
-', '\b', '', '"'), array('\\', '\/', '\n', '\t', '\r', '\b', '\f', '"'));
+', '	', '', '\b', '', '"'), array('\\', '\/', '\n', '\t', '\r', '\b', '\f', '"'));
           return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $result) . '"';
         }
         else
