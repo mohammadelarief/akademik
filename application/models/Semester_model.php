@@ -25,9 +25,7 @@ class Semester_model extends CI_Model
         $this->datatables->add_column(
             'action',
             anchor(site_url('semester/read/$1'), '<i class="fa fa-search"></i>', 'class="btn btn-xs btn-primary"  data-toggle="tooltip" title="Detail"') . "  " . anchor(site_url('semester/update/$1'), '<i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"')
-                . "  " . '<button class="btn btn-xs btn-info update-aktif" data-id="$1"><i class="fas fa-check-circle" onclick="return updateAktif(\'$1\')"></i></button> '
-            //  . "  " . anchor('javascript:void(0);', '<i class="fas fa-check-circle"></i>', 'class="btn btn-xs btn-info update-aktif" data-id="$1"')
-            //  . "  " . anchor(site_url('semester/delete/$1'), '<i class="fa fa-trash"></i>', 'class="btn btn-xs btn-danger" onclick="return confirmdelete(\'semester/delete/$1\')" data-toggle="tooltip" title="Delete"')
+            . "  " . '<button onclick="updateAktif(\'$1\')" class="btn btn-xs btn-info update-aktif" data-id="$1"><i class="fas fa-check-circle"></i></button>'
             ,
             'idsemester'
         );

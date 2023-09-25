@@ -115,103 +115,58 @@
             if (e.which == 13) return false;
 
         });
-        $("#myform").on('submit', function(e) {
-            var form = this
-            var rowsel = t.column(0).checkboxes.selected();
-            $.each(rowsel, function(index, rowId) {
-                $(form).append(
-                    $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowId)
-                )
-            });
-
-            if (rowsel.join(",") == "") {
-                alertify.alert('', 'Tidak ada data terpilih!', function() {});
-
-            } else {
-                var prompt = alertify.confirm('Apakah anda yakin akan menghapus data tersebut?', 'Apakah anda yakin akan menghapus data tersebut?').set('labels', {
-                    ok: 'Yakin',
-                    cancel: 'Batal!'
-                }).set('onok', function(closeEvent) {
-                    $.ajax({
-                        url: "semester/deletebulk",
-                        type: "post",
-                        data: "msg = " + rowsel.join(","),
-                        success: function(response) {
-                            if (response == true) {
-                                location.reload();
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.log(textStatus, errorThrown);
-                        }
-                    });
-
-                });
-            }
-            $(".ajs-header").html("Konfirmasi");
-        });
-
-        // $(".update-aktif").click(function() {
-        //     var id = $(this).data("id");
-        //     $.ajax({
-        //         url: "<?php echo base_url('Semester/updateAktifAjax/'); ?>" + id,
-        //         method: "POST",
-        //         dataType: "json",
-        //         success: function(data) {
-        //             if (data.success) {
-        //                 // Ubah teks pada kolom "Aktif"
-        //                 t.ajax.reload();
-        //                 // $("#aktif_" + id).text(data.newAktif);
-        //             } else {
-        //                 alert("Gagal mengupdate status aktif.");
-        //             }
-        //         },
-        //         error: function() {
-        //             alert("Terjadi kesalahan dalam permintaan Ajax.");
-        //         }
+        // $("#myform").on('submit', function(e) {
+        //     var form = this
+        //     var rowsel = t.column(0).checkboxes.selected();
+        //     $.each(rowsel, function(index, rowId) {
+        //         $(form).append(
+        //             $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowId)
+        //         )
         //     });
+
+        //     if (rowsel.join(",") == "") {
+        //         alertify.alert('', 'Tidak ada data terpilih!', function() {});
+
+        //     } else {
+        //         var prompt = alertify.confirm('Apakah anda yakin akan menghapus data tersebut?', 'Apakah anda yakin akan menghapus data tersebut?').set('labels', {
+        //             ok: 'Yakin',
+        //             cancel: 'Batal!'
+        //         }).set('onok', function(closeEvent) {
+        //             $.ajax({
+        //                 url: "semester/deletebulk",
+        //                 type: "post",
+        //                 data: "msg = " + rowsel.join(","),
+        //                 success: function(response) {
+        //                     if (response == true) {
+        //                         location.reload();
+        //                     }
+        //                 },
+        //                 error: function(jqXHR, textStatus, errorThrown) {
+        //                     console.log(textStatus, errorThrown);
+        //                 }
+        //             });
+
+        //         });
+        //     }
+        //     $(".ajs-header").html("Konfirmasi");
         // });
-        $('#tabel').on('click', '.update-aktif', function() {
-            var id = $(this).data('id');
-            updateAktif(id);
-        });
-
-
-
     });
 
     function updateAktif(id) {
         $.ajax({
-            url: '<?php echo base_url('semester/updateAktifAjax/'); ?>' + id,
+            url: '<?php echo base_url('semester/updateAktifAjax'); ?>',
             type: 'POST',
-            dataType: 'json',
-            success: function(response) {
-                // alert(response.message);
-                t.ajax.reload(); // Memuat ulang data tabel setelah update
+            data: {
+                id: id
             },
-            error: function(xhr, status, error) {
-                alert('Gagal mengupdate aktif.');
+            dataType: 'json',
+            success: function(data) {
+                if (data.status) {
+                    t.ajax.reload();
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.success('<a style="color:white">Data Semester Aktif Berhasil dirubah</a>');
+                }
             }
         });
-    }
-
-    function confirmdelete(linkdelete) {
-        alertify.confirm("Apakah anda yakin akan  menghapus data tersebut?", function() {
-            location.href = linkdelete;
-        }, function() {
-            alertify.error("Penghapusan data dibatalkan.");
-        });
-        $(".ajs-header").html("Konfirmasi");
-        return false;
-    }
-
-    function confirmaktif(linkdelete) {
-        alertify.confirm("Apakah anda yakin akan  mengaktifkan data tersebut?", function() {
-            location.href = linkdelete;
-        }, function() {
-            alertify.error("Penghapusan data dibatalkan.");
-        });
-        $(".ajs-header").html("Konfirmasi");
-        return false;
     }
 </script>

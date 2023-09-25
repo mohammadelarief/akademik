@@ -34,15 +34,16 @@ class Semester extends CI_Controller
         echo $this->Semester_model->json();
     }
 
-    public function updateAktifAjax($id)
+    public function updateAktifAjax()
     {
-        $success = $this->Semester_model->updateAktif($id);
-
-        if ($success) {
-            $this->session->set_flashdata('message', 'Aktivasi Record Success');
-        } else {
-            $this->session->set_flashdata('message_error', 'Aktivasi Record failed');
-        }
+        $id = $this->input->post('id');
+        $this->Semester_model->updateAktif($id);
+        echo json_encode(array("status" => TRUE));
+        // if ($success) {
+        //     $this->session->set_flashdata('message', 'Aktivasi Record Success');
+        // } else {
+        //     $this->session->set_flashdata('message_error', 'Aktivasi Record failed');
+        // }
         // if ($success) {
         //     $response['success'] = true;
         //     $response['newAktif'] = 1;
