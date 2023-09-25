@@ -41,3 +41,28 @@ if (!function_exists('cmb_periode')) {
         return $cmb;
     }
 }
+if (!function_exists('idperson_')) {
+    function idperson_()
+    {
+        $CI = &get_instance();
+        $CI->load->database();
+
+        $tAwal = $CI->db->query("SELECT DATE_FORMAT(tglmulai,'%y') as tahun FROM tbl_periode WHERE aktif='1'")->row()->tahun;
+        $akhiId_ = $tAwal + 1;
+        $akhiId = $akhiId_ . '0000';
+        $awalId = $tAwal . '0000';
+        // $awalId = $tAwal . '5000';
+
+        $result = $CI->db->query("SELECT ifnull(MAX(CONVERT(idperson, SIGNED INTEGER))," . $awalId . ")+1 as idbaru FROM tbl_person WHERE idperson BETWEEN " . $awalId . " AND " . $akhiId);
+
+        $rows2     = $result->row()->idbaru;
+        $idperson = '';
+        if (empty($rows2)) {
+            $idperson = $awalId;
+        } else {
+            $idperson = $rows2;
+        }
+
+        return $idperson;
+    }
+}

@@ -73,7 +73,7 @@ class Person extends CI_Controller
             'button' => 'Tambah',
             'action' => site_url('person/create_action'),
             'id' => set_value('id'),
-            'idperson' => set_value('idperson'),
+            'idperson' => idperson_(),
             'nama' => set_value('nama'),
             'gender' => set_value('gender'),
             'imageId' => set_value('imageId'),
