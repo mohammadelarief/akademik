@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group">
                         <label for="varchar">Idperiode <?php echo form_error('idperiode') ?></label>
-                        <?= cmb_periode('idperiode', 'tbl_periode', 'keterangan', 'idperiode', $idperiode); ?>
+                        <?= cmb_where('idperiode', 'tbl_periode', 'keterangan', 'idperiode', $idperiode, 'aktif'); ?>
                         <!-- <input type="text" class="form-control" name="idperiode" id="idperiode" placeholder="Idperiode" value="<?php echo $idperiode; ?>" /> -->
                     </div>
                     <div class="form-group">
