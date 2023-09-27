@@ -7,6 +7,7 @@ class Profile extends CI_Controller {
 	{
 		parent::__construct();
 		$this->layout->auth();
+		$this->layout->validate_token();
 	}
 	
 	public function index()

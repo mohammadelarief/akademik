@@ -66,3 +66,45 @@ if (!function_exists('idperson_')) {
         return $idperson;
     }
 }
+
+if (!function_exists('token_')) {
+    function token_($timestamp, $variable1, $variable2)
+    {
+        $CI = &get_instance();
+        $CI->load->library('encryption');
+
+        // Dapatkan timestamp sekarang
+        // $timestamp = time();
+
+        // Gabungkan timestamp dan dua variable dengan karakter titik
+        $string_to_encrypt = $timestamp . '.' . $variable1 . '.' . $variable2;
+
+        // Enkripsi string
+        $encrypted_string = $CI->encryption->encrypt($string_to_encrypt);
+
+        return $encrypted_string;
+    }
+}
+
+if (!function_exists('sessionsDb')) {
+    function sessionsDb($table_name, $data_array)
+    {
+        $CI = &get_instance();
+        $CI->load->database();
+
+        // Pastikan $data_array adalah array yang tidak kosong
+        if (!empty($data_array) && is_array($data_array)) {
+            // Masukkan data ke dalam tabel
+            $CI->db->insert($table_name, $data_array);
+
+            // Periksa apakah operasi penyisipan berhasil
+            if ($CI->db->affected_rows() > 0) {
+                return true; // Sukses
+            } else {
+                return false; // Gagal
+            }
+        } else {
+            return false; // Data tidak valid
+        }
+    }
+}

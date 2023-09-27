@@ -11,7 +11,8 @@ class " . $c . " extends CI_Controller
     {
         parent::__construct();
         \$c_url = \$this->router->fetch_class();
-        \$this->layout->auth(); 
+        \$this->layout->auth();
+        \$this->layout->validate_token();
         \$this->layout->auth_privilege(\$c_url);
         \$this->load->model('$m');
         \$this->load->library('form_validation');";

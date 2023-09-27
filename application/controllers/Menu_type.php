@@ -9,6 +9,7 @@ class Menu_type extends CI_Controller
     {
         parent::__construct();
         $this->layout->auth();
+        $this->layout->validate_token();
         $c_url = $this->router->fetch_class();
         $this->layout->auth_privilege($c_url); 
         $this->load->model('Menu_type_model');

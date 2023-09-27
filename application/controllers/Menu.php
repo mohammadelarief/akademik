@@ -10,7 +10,8 @@ class Menu extends CI_Controller
         parent::__construct();
         $this->layout->auth();
         $c_url = $this->router->fetch_class();
-        $this->layout->auth_privilege($c_url); 
+        $this->layout->auth_privilege($c_url);
+        $this->layout->validate_token();
         $this->load->model('Menu_model');
         $this->load->library('form_validation');        
 	   $this->load->library('datatables');

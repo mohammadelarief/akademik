@@ -6,6 +6,10 @@ class Migration extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $c_url = $this->router->fetch_class();
+        $this->layout->auth();
+        $this->layout->validate_token();
+        $this->layout->auth_privilege($c_url);
         $this->load->library('migration');
     }
 

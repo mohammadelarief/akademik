@@ -10,6 +10,7 @@ class Semester extends CI_Controller
         parent::__construct();
         $c_url = $this->router->fetch_class();
         $this->layout->auth();
+        $this->layout->validate_token();
         $this->layout->auth_privilege($c_url);
         $this->load->model('Semester_model');
         $this->load->library('form_validation');

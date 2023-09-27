@@ -7,6 +7,7 @@ class Dashboard extends CI_Controller {
 	{
 		parent::__construct();
 		$this->layout->auth();
+		$this->layout->validate_token();
 	}
 	
 	public function index()
@@ -20,6 +21,14 @@ class Dashboard extends CI_Controller {
         $data['code_js'] = 'Dashboard/codejs';
         $data['page'] = 'Dashboard/Index';
 		$this->load->view('template/backend', $data);
+	}
+	function printSessions()
+	{
+		echo "<pre>";
+
+		print_r($this->session->userdata());
+
+		echo "</pre>";
 	}
 
 }
