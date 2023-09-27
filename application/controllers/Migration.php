@@ -6,10 +6,10 @@ class Migration extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $c_url = $this->router->fetch_class();
-        $this->layout->auth();
-        $this->layout->validate_token();
-        $this->layout->auth_privilege($c_url);
+        // $c_url = $this->router->fetch_class();
+        // $this->layout->auth();
+        // $this->layout->validate_token();
+        // $this->layout->auth_privilege($c_url);
         $this->load->library('migration');
     }
 
@@ -38,6 +38,14 @@ class Migration extends CI_Controller
         } else {
             redirect('dashboard');
             // echo 'Migration berhasil dijalankan.';
+        }
+    }
+
+    public function migrate()
+    {
+
+        if ($this->migration->current() === FALSE) {
+            show_error($this->migration->error_string());
         }
     }
 }
