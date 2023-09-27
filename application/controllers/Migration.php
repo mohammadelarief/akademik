@@ -41,10 +41,10 @@ class Migration extends CI_Controller
         }
     }
 
-    public function migrate()
+    public function migrate($versi)
     {
 
-        if ($this->migration->current() === FALSE) {
+        if ($this->migration->version($versi) === FALSE) {
             show_error($this->migration->error_string());
         }
     }
