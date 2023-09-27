@@ -46,6 +46,8 @@ class Migration extends CI_Controller
 
         if ($this->migration->version($versi) === FALSE) {
             show_error($this->migration->error_string());
+        } else {
+            redirect('dashboard');
         }
     }
 }
