@@ -54,6 +54,7 @@
       <?php } ?>
     </script>
     <?php (isset($code_js) ? $this->load->view($code_js) : ""); ?>
+    <?php (isset($modal) ? $this->load->view($modal) : ""); ?>
     </body>
 
     </html>

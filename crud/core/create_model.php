@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $string = "<?php
 
@@ -18,25 +18,31 @@ class " . $m . " extends CI_Model
     }";
 
 if ($jenis_tabel <> 'reguler_table') {
-    
-$column_all = array();
-foreach ($all as $row) {
-    $column_all[] = $row['column_name'];
-}
-$columnall = implode(',', $column_all);
-    
-$string .="\n\n    // datatables
+
+    $column_all = array();
+    foreach ($all as $row) {
+        $column_all[] = $row['column_name'];
+    }
+    $columnall = implode(',', $column_all);
+
+    $string .=
+    "\n\n    // datatables
     function json() {
-        \$this->datatables->select('".$columnall."');
-        \$this->datatables->from('".$table_name."');
+        \$this->datatables->select('" . $columnall . "');
+        \$this->datatables->from('" . $table_name .
+    "');
         //add this line for join
-        //\$this->datatables->join('table2', '".$table_name.".field = table2.field');
-        \$this->datatables->add_column('action', anchor(site_url('".$c_url."/read/\$1'),'<i class=\"fa fa-search\"></i>', 'class=\"btn btn-xs btn-primary\"  data-toggle=\"tooltip\" title=\"Detail\"').\"  \".anchor(site_url('".$c_url."/update/\$1'),'<i class=\"fa fa-edit\"></i>', 'class=\"btn btn-xs btn-warning\" data-toggle=\"tooltip\" title=\"Edit\"').\"  \".anchor(site_url('".$c_url."/delete/\$1'),'<i class=\"fa fa-trash\"></i>', 'class=\"btn btn-xs btn-danger\" onclick=\"return confirmdelete(\'".$c_url."/delete/\$1\')\" data-toggle=\"tooltip\" title=\"Delete\"'), '$pk');
-        return \$this->datatables->generate();
+        //\$this->datatables->join('table2', '" . $table_name . ".field = table2.field');";
+    if ($cruds == 'ajax_modal') {
+        $string .= "\n\$this->datatables->add_column('action', '<button onclick=\"edit_data(\'$1\')\" class=\"btn btn-xs btn-warning item_edit\" data-id=\"$1\"><i class=\"fa fa-edit\"></i></button>'.\"  \".anchor(site_url('" . $c_url . "/delete/\$1'),'<i class=\"fa fa-trash\"></i>', 'class=\"btn btn-xs btn-danger\" onclick=\"return confirmdelete(\'" . $c_url . "/delete/\$1\')\" data-toggle=\"tooltip\" title=\"Delete\"'), '$pk');";
+    } else {
+        $string .= "\n\$this->datatables->add_column('action', anchor(site_url('" . $c_url . "/read/\$1'),'<i class=\"fa fa-search\"></i>', 'class=\"btn btn-xs btn-primary\"  data-toggle=\"tooltip\" title=\"Detail\"').\"  \".anchor(site_url('" . $c_url . "/update/\$1'),'<i class=\"fa fa-edit\"></i>', 'class=\"btn btn-xs btn-warning\" data-toggle=\"tooltip\" title=\"Edit\"').\"  \".anchor(site_url('" . $c_url . "/delete/\$1'),'<i class=\"fa fa-trash\"></i>', 'class=\"btn btn-xs btn-danger\" onclick=\"return confirmdelete(\'" . $c_url . "/delete/\$1\')\" data-toggle=\"tooltip\" title=\"Delete\"'), '$pk');";
+    }
+    $string .= "return \$this->datatables->generate();
     }";
 }
 
-$string .="\n\n    // get all
+$string .= "\n\n    // get all
     function get_all()
     {
         \$this->db->order_by(\$this->id, \$this->order);
@@ -55,8 +61,8 @@ $string .="\n\n    // get all
         \$this->db->like('$pk', \$q);";
 
 foreach ($non_pk as $row) {
-    $string .= "\n\t\$this->db->or_like('" . $row['column_name'] ."', \$q);";
-}    
+    $string .= "\n\t\$this->db->or_like('" . $row['column_name'] . "', \$q);";
+}
 
 $string .= "\n\t\$this->db->from(\$this->table);
         return \$this->db->count_all_results();
@@ -68,8 +74,8 @@ $string .= "\n\t\$this->db->from(\$this->table);
         \$this->db->like('$pk', \$q);";
 
 foreach ($non_pk as $row) {
-    $string .= "\n\t\$this->db->or_like('" . $row['column_name'] ."', \$q);";
-}    
+    $string .= "\n\t\$this->db->or_like('" . $row['column_name'] . "', \$q);";
+}
 
 $string .= "\n\t\$this->db->limit(\$limit, \$start);
         return \$this->db->get(\$this->table)->result();
@@ -103,9 +109,9 @@ $string .= "\n\t\$this->db->limit(\$limit, \$start);
         return \$this->db->delete(\$this->table);
     }";
 
-    if(!$isai){
-        
-        $string .= "\n//check pk data is exists \n
+if (!$isai) {
+
+    $string .= "\n//check pk data is exists \n
         function is_exist(\$id){
          \$query = \$this->db->get_where(\$this->table, array(\$this->id => \$id));
          \$count = \$query->num_rows();
@@ -115,17 +121,11 @@ $string .= "\n\t\$this->db->limit(\$limit, \$start);
             return false;
          }
         }";
-    }
-    $string .="
+}
+$string .=
+    "
 
+}";
 
-}"
-
-;
-
-
-
-
-$hasil_model = createFile($string, $target."models/" . $m_file);
-
+$hasil_model = createFile($string, $target . "models/" . $m_file);
 ?>

@@ -74,8 +74,11 @@ $string .="\n\n    public function index()
             '".label($c_url)."' => '',
         ];
         \$data['code_js'] = '$c_url/codejs';
-        \$data['page'] = '$c_url/$v_list';
-        \$this->load->view('template/backend', \$data);
+        \$data['page'] = '$c_url/$v_list';";
+    if ($cruds == 'ajax_modal') {
+        $string .= "\n\t\$data['modal'] = '$c_url/$v_modal';";
+    };
+    $string .= "\n\t\$this->load->view('template/backend', \$data);
     } 
     
     public function json() {
@@ -83,6 +86,14 @@ $string .="\n\n    public function index()
         echo \$this->" . $m . "->json();
     }";
 
+}
+if ($cruds == 'ajax_modal') {
+    $string .= "\n\n    public function json_get() 
+        {
+            \$id = \$this->input->post(\"id\");
+            \$row = \$this->" . $m . "->get_by_id(\$id);
+            \necho json_encode(\$row);
+            \n}";
 }
     
 $string .= "\n\n    public function read(\$id) 

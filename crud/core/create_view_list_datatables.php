@@ -4,7 +4,7 @@ $string = "<div class=\"row\">
 <div class=\"col-xs-12\">
     <div class=\"box\">
       <div class=\"box-header\">
-        <h3 class=\"box-title\">List ".ucfirst($table_name)."</h3>
+        <h3 class=\"box-title\">List " . ucfirst($table_name) . "</h3>
         <div class=\"box-tools pull-right\">
             <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\" data-toggle=\"tooltip\"
                     title=\"Collapse\">
@@ -19,9 +19,13 @@ $string = "<div class=\"row\">
         <form id=\"myform\" method=\"post\" onsubmit=\"return false\">
 
            <div class=\"row\" style=\"margin-bottom: 10px\">
-            <div class=\"col-xs-12 col-md-4\">
-                <?php echo anchor(site_url('".$c_url."/create'), '<i class=\"fa fa-plus\"></i> Create', 'class=\"btn bg-purple\"'); ?>
-            </div>
+            <div class=\"col-xs-12 col-md-4\">";
+if ($cruds == 'ajax_modal') {
+    $string .= "<a href=\"#\" class=\"btn btn-sm btn-success\" data-toggle=\"modal\" data-target=\"#ModalaForm\"><span class=\"fa fa-plus\"></span> Create</a>";
+} else {
+    $string .= "<?php echo anchor(site_url('" . $c_url . "/create'), '<i class=\"fa fa-plus\"></i> Create', 'class=\"btn bg-purple\"'); ?>";
+}
+$string .= "</div>
             <div class=\"col-xs-12 col-md-4 text-center\">
                 <div style=\"margin-top: 4px\"  id=\"message\">
                     
@@ -53,16 +57,8 @@ foreach ($non_pk as $row) {
 $string .= "\n\t\t 
                     <th width=\"80px\">Action</th>   
                 </tr>
-            </thead>";
-
-$column_non_pk = array();
-foreach ($non_pk as $row) {
-    $column_non_pk[] .= "{\"data\": \"".$row['column_name']."\"}";
-}
-$col_non_pk = implode(',', $column_non_pk);
-
-$string .= "\n\t
-
+            </thead>
+            \n\t
         </table>
          </div>
         <button class=\"btn btn-danger\" type=\"submit\"><i class=\"fa fa-trash\"></i> Hapus Data Terpilih</button>
@@ -72,6 +68,22 @@ $string .= "\n\t
     </div>
   </div>
 </div>";
+$column_non_pk = array();
+foreach ($non_pk as $row) {
+    $column_non_pk[] .= "{\"data\": \"" . $row['column_name'] . "\"}";
+}
+$col_non_pk = implode(',', $column_non_pk);
+$column_non_pk_1 = array();
+foreach ($non_pk as $row) {
+    $column_non_pk_1[] .= "$(\"[name='" . $row['column_name'] . "']\").val(data." . $row['column_name'] . ");";
+}
+$col_non_pk_1 = implode("\n", $column_non_pk_1);
+
+$column_non_pk_2 = array();
+foreach ($non_pk as $row) {
+    $column_non_pk_2[] .= $row['column_name'];
+}
+$col_non_pk_2 = implode(',', $column_non_pk_2);
         $string2 = "<script type=\"text/javascript\">
             $(document).ready(function() {
                 $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
@@ -114,7 +126,7 @@ $string .= "\n\t
                         {
                             \"data\": \"$pk\",
                             \"orderable\": false
-                        },".$col_non_pk.",
+                        }," . $col_non_pk . ",
                         {
                             \"data\" : \"action\",
                             \"orderable\": false,
@@ -162,7 +174,7 @@ $string .= "\n\t
                     }else{
                         var prompt =  alertify.confirm('Apakah anda yakin akan menghapus data tersebut?', 'Apakah anda yakin akan menghapus data tersebut?').set('labels', {ok:'Yakin', cancel:'Batal!'}).set('onok',function(closeEvent){ 
                             $.ajax({
-                                url: \"".$c_url."/deletebulk\",
+                                url: \"" . $c_url . "/deletebulk\",
                                 type: \"post\",
                                 data: \"msg = \"+rowsel.join(\",\") ,
                                 success: function (response) {
@@ -188,6 +200,23 @@ $string .= "\n\t
               });
               $(\".ajs-header\").html(\"Konfirmasi\");
               return false;
+            }
+            function edit_data(id){
+                $.ajax({
+                    url: \"<?php echo base_url('" . $c_url . "/json_get'); ?>\",
+                    type: \"POST\",
+                    data: {
+                        id: id
+                    },
+                    dataType: \"json\",
+                    success: function(data) {
+                        $.each(data, function(" . $col_non_pk_2 . ") {
+                            $(\"#ModalaForm\").modal(\"show\");
+                            " . $col_non_pk_1 . "
+                        });
+                    }
+                });
+                return false;
             }
         </script>";
 

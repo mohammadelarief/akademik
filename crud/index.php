@@ -46,9 +46,10 @@ require_once 'core/process.php';
                 </div>
 
                 <div class="form-group">
+                    <label>Choose Table</label>
                     <div class="row">
                         <?php $jenis_tabel = isset($_POST['jenis_tabel']) ? $_POST['jenis_tabel'] : 'reguler_table'; ?>
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
                                 <label>
                                     <input type="radio" name="jenis_tabel" value="reguler_table" <?php echo $jenis_tabel == 'reguler_table' ? 'checked' : ''; ?>>
@@ -56,7 +57,7 @@ require_once 'core/process.php';
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
                                 <label>
                                     <input type="radio" name="jenis_tabel" value="datatables" <?php echo $jenis_tabel == 'datatables' ? 'checked' : ''; ?>>
@@ -65,11 +66,13 @@ require_once 'core/process.php';
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
                     <div class="row">
 
                         <?php $isai = isset($_POST['isai']) ? $_POST['isai'] : 'yes'; ?>
-                        <div class="col-md-5">
-                            PK Is Auto Increment ?<br />
+                        <div class="col-md-6">
+                            <label>PK Is Auto Increment ?<br /></label>
                         </div>
                         <div class="col-md-3">
                             <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
@@ -79,7 +82,7 @@ require_once 'core/process.php';
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
                                 <label>
                                     <input type="radio" name="isai" value="0" <?php echo $isai == '0' ? 'checked' : ''; ?>>
@@ -90,32 +93,63 @@ require_once 'core/process.php';
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="checkbox">
-                        <?php $export_pdf = isset($_POST['export_pdf']) ? $_POST['export_pdf'] : ''; ?>
-                        <label>
-                            <input type="checkbox" name="export_pdf" value="1" <?php echo $export_pdf == '1' ? 'checked' : '' ?>>
-                            Print Preview
-                        </label>
+                    <label>Choose CRUD</label>
+                    <div class="row">
+                        <?php $cruds = isset($_POST['cruds']) ? $_POST['cruds'] : 'reguler_crud'; ?>
+                        <div class="col-md-6">
+                            <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
+                                <label>
+                                    <input type="radio" name="cruds" value="reguler_crud" <?php echo $cruds == 'reguler_crud' ? 'checked' : ''; ?>>
+                                    Reguler CRUD
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
+                                <label>
+                                    <input type="radio" name="cruds" value="ajax_modal" <?php echo $cruds == 'ajax_modal' ? 'checked' : ''; ?>>
+                                    AJAX Modal
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="checkbox">
-                        <?php $export_excel = isset($_POST['export_excel']) ? $_POST['export_excel'] : ''; ?>
-                        <label>
-                            <input type="checkbox" name="export_excel" value="1" <?php echo $export_excel == '1' ? 'checked' : '' ?>>
-                            Export Excel
-                        </label>
+                    <label>Choose Module Export</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <?php $export_pdf = isset($_POST['export_pdf']) ? $_POST['export_pdf'] : ''; ?>
+                                <label>
+                                    <input type="checkbox" name="export_pdf" value="1" <?php echo $export_pdf == '1' ? 'checked' : '' ?>>
+                                    Print Preview
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <?php $export_excel = isset($_POST['export_excel']) ? $_POST['export_excel'] : ''; ?>
+                                <label>
+                                    <input type="checkbox" name="export_excel" value="1" <?php echo $export_excel == '1' ? 'checked' : '' ?>>
+                                    Export Excel
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <?php $export_word = isset($_POST['export_word']) ? $_POST['export_word'] : ''; ?>
+                                <label>
+                                    <input type="checkbox" name="export_word" value="1" <?php echo $export_word == '1' ? 'checked' : '' ?>>
+                                    Export Word
+                                </label>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="form-group">
                 </div>
 
                 <div class="form-group">
-                    <div class="checkbox">
-                        <?php $export_word = isset($_POST['export_word']) ? $_POST['export_word'] : ''; ?>
-                        <label>
-                            <input type="checkbox" name="export_word" value="1" <?php echo $export_word == '1' ? 'checked' : '' ?>>
-                            Export Word
-                        </label>
-                    </div>
                 </div>
 
 
