@@ -92,10 +92,9 @@ if ($cruds == 'ajax_modal') {
     "\n\n    public function json_get() 
         {
             \$id = \$this->input->post(\"id\");
-            \$row = \$this->" . $m .
-    "->get_by_id(\$id);
+            \$row = \$this->" . $m . "->get_by_id(\$id);
             \necho json_encode(\$row);
-            \n}
+            \n}\n
             public function json_form()
         {
             \$this->_rules();
