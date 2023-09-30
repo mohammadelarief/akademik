@@ -44,3 +44,5 @@ $string .= "</div>
         <!--END MODAL FORM-->";
 
 $hasil_view_modal = createFile($string, $target . "views/" . $c_url . "/" . $v_modal_file);
+
+?>
