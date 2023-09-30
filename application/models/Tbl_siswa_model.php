@@ -3,11 +3,11 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Semester_model extends CI_Model
+class Tbl_siswa_model extends CI_Model
 {
 
-    public $table = 'tbl_semester';
-    public $id = 'idsemester';
+    public $table = 'tbl_siswa';
+    public $id = 'idsiswa';
     public $order = 'DESC';
 
     function __construct()
@@ -18,30 +18,12 @@ class Semester_model extends CI_Model
     // datatables
     function json()
     {
-        $this->datatables->select('idsemester,nama_semester,idperiode,keterangan,tanggal_awal,tanggal_akhir,status');
-        $this->datatables->from('tbl_semester');
+        $this->datatables->select('idsiswa,idperson,idkelas,tgl_masuk,info1,info2,user1,tgl_insert,tglUpdate,status');
+        $this->datatables->from('tbl_siswa');
         //add this line for join
-        //$this->datatables->join('table2', 'tbl_semester.field = table2.field');
-        $this->datatables->add_column(
-            'action',
-            anchor(site_url('semester/read/$1'), '<i class="fa fa-search"></i>', 'class="btn btn-xs btn-primary"  data-toggle="tooltip" title="Detail"') . "  " . anchor(site_url('semester/update/$1'), '<i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"')
-            . "  " . '<button onclick="return updateAktif(\'$1\')" class="btn btn-xs btn-info update-aktif" data-id="$1"><i class="fas fa-check-circle"></i></button>'
-            ,
-            'idsemester'
-        );
+        //$this->datatables->join('table2', 'tbl_siswa.field = table2.field');
+        $this->datatables->add_column('action', '<button onclick="return edit_data(\'$1\')" class="btn btn-xs btn-warning item_edit" data-id="$1"><i class="fa fa-edit"></i></button>' . "  " . anchor(site_url('tbl_siswa/delete/$1'), '<i class="fa fa-trash"></i>', 'class="btn btn-xs btn-danger" onclick="return confirmdelete(\'tbl_siswa/delete/$1\')" data-toggle="tooltip" title="Delete"'), 'idsiswa');
         return $this->datatables->generate();
-    }
-
-    public function updateAktif($id)
-    {
-        // Update semua baris menjadi 0 kecuali yang dipilih
-        $this->db->update('tbl_semester', array('status' => 0));
-
-        // Update baris dengan ID yang sesuai menjadi 1
-        $this->db->where('idsemester', $id);
-        $success = $this->db->update('tbl_semester', array('status' => 1));
-
-        return $success;
     }
 
     // get all
@@ -61,13 +43,16 @@ class Semester_model extends CI_Model
     // get total rows
     function total_rows($q = NULL)
     {
-        $this->db->like('idsemester', $q);
-        $this->db->or_like('idsemester', $q);
-        $this->db->or_like('nama_semester', $q);
-        $this->db->or_like('idperiode', $q);
-        $this->db->or_like('keterangan', $q);
-        $this->db->or_like('tanggal_awal', $q);
-        $this->db->or_like('tanggal_akhir', $q);
+        $this->db->like('idsiswa', $q);
+        $this->db->or_like('idsiswa', $q);
+        $this->db->or_like('idperson', $q);
+        $this->db->or_like('idkelas', $q);
+        $this->db->or_like('tgl_masuk', $q);
+        $this->db->or_like('info1', $q);
+        $this->db->or_like('info2', $q);
+        $this->db->or_like('user1', $q);
+        $this->db->or_like('tgl_insert', $q);
+        $this->db->or_like('tglUpdate', $q);
         $this->db->or_like('status', $q);
         $this->db->from($this->table);
         return $this->db->count_all_results();
@@ -77,13 +62,16 @@ class Semester_model extends CI_Model
     function get_limit_data($limit, $start = 0, $q = NULL)
     {
         $this->db->order_by($this->id, $this->order);
-        $this->db->like('idsemester', $q);
-        $this->db->or_like('idsemester', $q);
-        $this->db->or_like('nama_semester', $q);
-        $this->db->or_like('idperiode', $q);
-        $this->db->or_like('keterangan', $q);
-        $this->db->or_like('tanggal_awal', $q);
-        $this->db->or_like('tanggal_akhir', $q);
+        $this->db->like('idsiswa', $q);
+        $this->db->or_like('idsiswa', $q);
+        $this->db->or_like('idperson', $q);
+        $this->db->or_like('idkelas', $q);
+        $this->db->or_like('tgl_masuk', $q);
+        $this->db->or_like('info1', $q);
+        $this->db->or_like('info2', $q);
+        $this->db->or_like('user1', $q);
+        $this->db->or_like('tgl_insert', $q);
+        $this->db->or_like('tglUpdate', $q);
         $this->db->or_like('status', $q);
         $this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
@@ -99,7 +87,7 @@ class Semester_model extends CI_Model
     function update($id, $data)
     {
         $this->db->where($this->id, $id);
-        $this->db->update($this->table, $data);
+        $hasil = $this->db->update($this->table, $data);
     }
 
     // delete data

@@ -34,7 +34,7 @@ if ($jenis_tabel <> 'reguler_table') {
         //add this line for join
         //\$this->datatables->join('table2', '" . $table_name . ".field = table2.field');";
     if ($cruds == 'ajax_modal') {
-        $string .= "\n\$this->datatables->add_column('action', '<button onclick=\"edit_data(\'$1\')\" class=\"btn btn-xs btn-warning item_edit\" data-id=\"$1\"><i class=\"fa fa-edit\"></i></button>'.\"  \".anchor(site_url('" . $c_url . "/delete/\$1'),'<i class=\"fa fa-trash\"></i>', 'class=\"btn btn-xs btn-danger\" onclick=\"return confirmdelete(\'" . $c_url . "/delete/\$1\')\" data-toggle=\"tooltip\" title=\"Delete\"'), '$pk');";
+        $string .= "\n\$this->datatables->add_column('action', '<button onclick=\"return edit_data(\'$1\')\" class=\"btn btn-xs btn-warning item_edit\" data-id=\"$1\"><i class=\"fa fa-edit\"></i></button>'.\"  \".anchor(site_url('" . $c_url . "/delete/\$1'),'<i class=\"fa fa-trash\"></i>', 'class=\"btn btn-xs btn-danger\" onclick=\"return confirmdelete(\'" . $c_url . "/delete/\$1\')\" data-toggle=\"tooltip\" title=\"Delete\"'), '$pk');";
     } else {
         $string .= "\n\$this->datatables->add_column('action', anchor(site_url('" . $c_url . "/read/\$1'),'<i class=\"fa fa-search\"></i>', 'class=\"btn btn-xs btn-primary\"  data-toggle=\"tooltip\" title=\"Detail\"').\"  \".anchor(site_url('" . $c_url . "/update/\$1'),'<i class=\"fa fa-edit\"></i>', 'class=\"btn btn-xs btn-warning\" data-toggle=\"tooltip\" title=\"Edit\"').\"  \".anchor(site_url('" . $c_url . "/delete/\$1'),'<i class=\"fa fa-trash\"></i>', 'class=\"btn btn-xs btn-danger\" onclick=\"return confirmdelete(\'" . $c_url . "/delete/\$1\')\" data-toggle=\"tooltip\" title=\"Delete\"'), '$pk');";
     }
@@ -91,8 +91,11 @@ $string .= "\n\t\$this->db->limit(\$limit, \$start);
     function update(\$id, \$data)
     {
         \$this->db->where(\$this->id, \$id);
-        \$this->db->update(\$this->table, \$data);
-    }
+        \$this->db->update(\$this->table, \$data);";
+if ($cruds == 'ajax_modal') {
+    $string .= "\nreturn \$this->db->affected_rows() > 0;";
+}
+$string .= "\n}
 
     // delete data
     function delete(\$id)

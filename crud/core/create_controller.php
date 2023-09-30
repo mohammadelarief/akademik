@@ -88,12 +88,34 @@ $string .="\n\n    public function index()
 
 }
 if ($cruds == 'ajax_modal') {
-    $string .= "\n\n    public function json_get() 
+    $string .=
+    "\n\n    public function json_get() 
         {
             \$id = \$this->input->post(\"id\");
-            \$row = \$this->" . $m . "->get_by_id(\$id);
+            \$row = \$this->" . $m .
+    "->get_by_id(\$id);
             \necho json_encode(\$row);
-            \n}";
+            \n}
+            public function json_update()
+        {
+            \$this->_rules();
+            if (\$this->form_validation->run() === FALSE) {
+                echo json_encode(array(\"status\" => FALSE, \"error\" => validation_errors()));
+            } else {
+                \$data = array(";
+    foreach ($non_pk as $row) {
+        $string .= "\n\t\t'" . $row['column_name'] . "' => \$this->input->post('" . $row['column_name'] . "',TRUE),";
+    }
+    $string .= "\n\t    );
+                
+                            \$update = \$this->" . $m . "->update(\$this->input->post('$pk', TRUE), \$data);
+                            if (\$update) {
+                                echo json_encode(array(\"status\" => TRUE));
+                            } else {
+                                echo json_encode(array(\"status\" => FALSE, \"error\" => \"Failed to update data\"));
+                            }
+        }}
+            ";
 }
     
 $string .= "\n\n    public function read(\$id) 

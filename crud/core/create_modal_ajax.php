@@ -5,8 +5,8 @@ $string = "
             <div class=\"modal-dialog\">
             <div class=\"modal-content\">
             <div class=\"modal-header\">
-                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>
-                <h3 class=\"modal-title\" id=\"myModalLabel\">Tambah Barang</h3>
+                <button type=\"button\" onclick=\"clear_data()\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>
+                <h3 class=\"modal-title\" id=\"myModalLabel\">Tambah " . ucfirst($table_name) . "</h3>
             </div>
             <form class=\"form-horizontal\">
                 <div class=\"modal-body\">";
@@ -33,7 +33,7 @@ if ($isai) {
 $string .= "</div>
  
                 <div class=\"modal-footer\">
-                    <button class=\"btn\" data-dismiss=\"modal\" aria-hidden=\"true\">Tutup</button>
+                    <button class=\"btn\" onclick=\"clear_data()\" data-dismiss=\"modal\" aria-hidden=\"true\">Tutup</button>
                     <button class=\"btn btn-info\" id=\"btn_simpan\">Simpan</button>
                 </div>
             </form>

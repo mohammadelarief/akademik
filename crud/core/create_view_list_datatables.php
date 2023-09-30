@@ -79,6 +79,24 @@ foreach ($non_pk as $row) {
 }
 $col_non_pk_1 = implode("\n", $column_non_pk_1);
 
+$column_non_pk_clear = array();
+foreach ($non_pk as $row) {
+    $column_non_pk_clear[] .= "$(\"[name='" . $row['column_name'] . "']\").val(\"\");";
+}
+$col_non_pk_clear = implode("\n", $column_non_pk_clear);
+
+$column_non_pk_form = array();
+foreach ($non_pk as $row) {
+    $column_non_pk_form[] .= "var " . $row['column_name'] . " = $(\"[name='" . $row['column_name'] . "']\").val();";
+}
+$col_non_pk_form = implode("\n", $column_non_pk_form);
+
+$column_non_pk_value = array();
+foreach ($non_pk as $row) {
+    $column_non_pk_value[] .= $row['column_name'] . " : " . $row['column_name'];
+}
+$col_non_pk_value = implode(',', $column_non_pk_value);
+
 $column_non_pk_2 = array();
 foreach ($non_pk as $row) {
     $column_non_pk_2[] .= $row['column_name'];
@@ -202,6 +220,10 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
               return false;
             }
             function edit_data(id){
+                $(\"#myModalLabel\").text(\"Ubah " . ucfirst($table_name) . "\");
+                $(\"#btn_simpan\").attr(\"id\", \"btn_ubah\");
+                $(\"#btn_ubah\").text(\"Ubah\");
+                $(\"[name=" . $pk . "]\").attr(\"readonly\", true);
                 $.ajax({
                     url: \"<?php echo base_url('" . $c_url . "/json_get'); ?>\",
                     type: \"POST\",
@@ -218,6 +240,31 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                 });
                 return false;
             }
+            function clear_data(){
+                $(\"[name=" . $pk . "]\").attr(\"readonly\", false);
+                $(\"#btn_ubah\").attr(\"id\", \"btn_simpan\");
+                $(\"#btn_simpan\").text(\"Simpan\");
+                " . $col_non_pk_clear . "
+            }
+            $('#btn_ubah').on('click',function(){
+                " . $col_non_pk_form . "
+                $.ajax({
+                    type : \"POST\",
+                    url  : \"<?php echo base_url('" . $c_url . "/json_update')?>\",
+                    dataType : \"JSON\",
+                    //data : $('#ModalaForm').serialize(),
+                    data : {" . $col_non_pk_value . "},
+                    success: function(data){
+                        if(data.status){
+                            clear_data()
+                            $('#ModalaForm').modal('hide');
+                        } else {
+                            $('#ModalaForm .text-danger').html(data.error);
+                        }
+                    }
+                });
+                return false;
+            });
         </script>";
 
 
