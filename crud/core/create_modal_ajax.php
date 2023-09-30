@@ -8,7 +8,7 @@ $string = "
                 <button type=\"button\" onclick=\"clear_data()\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>
                 <h3 class=\"modal-title\" id=\"myModalLabel\">Tambah " . ucfirst($table_name) . "</h3>
             </div>
-            <form class=\"form-horizontal\">
+            <form class=\"form-horizontal\" method=\"post\" id=\"form\">
                 <div class=\"modal-body\">";
 foreach ($non_pk as $row) {
     if ($row["data_type"] == 'text') {
@@ -34,7 +34,8 @@ $string .= "</div>
  
                 <div class=\"modal-footer\">
                     <button class=\"btn\" onclick=\"clear_data()\" data-dismiss=\"modal\" aria-hidden=\"true\">Tutup</button>
-                    <button class=\"btn btn-info\" id=\"btn_simpan\">Simpan</button>
+                    <input type=\"hidden\" name=\"actions\" id=\"actions\" class=\"btn btn-success\" value=\"Add\" />
+                    <input type=\"submit\" name=\"action\" id=\"action\" class=\"btn btn-success\" value=\"Add\" />
                 </div>
             </form>
             </div>

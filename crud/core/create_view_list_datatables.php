@@ -209,7 +209,29 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                     }
                     $(\".ajs-header\").html(\"Konfirmasi\");
                 });
+            $('#add_button').click(function() {
+            $('#form')[0].reset();
+            $('.modal-title').text(\"Tambah " . $c_url . "\");
+            $('#action').val(\"Add\");
+        });
             });
+           $(document).on('submit', '#form', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: \"<?php echo base_url('" . $c_url . "/json_form'); ?>\",
+                method: 'POST',
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    alert(data);
+                    $('#form')[0].reset();
+                    $('#ModalaForm').modal('hide');
+                    t.ajax.reload();
+                }
+            });
+        });
             function confirmdelete(linkdelete) {
               alertify.confirm(\"Apakah anda yakin akan  menghapus data tersebut?\", function() {
                 location.href = linkdelete;
@@ -232,39 +254,23 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                     },
                     dataType: \"json\",
                     success: function(data) {
-                        $.each(data, function(" . $col_non_pk_2 . ") {
                             $(\"#ModalaForm\").modal(\"show\");
                             " . $col_non_pk_1 . "
-                        });
+                            $('#action').val(\"Edit\");
+                $('#actions').val(\"Edit\");
                     }
                 });
                 return false;
             }
             function clear_data(){
                 $(\"[name=" . $pk . "]\").attr(\"readonly\", false);
-                $(\"#btn_ubah\").attr(\"id\", \"btn_simpan\");
-                $(\"#btn_simpan\").text(\"Simpan\");
+                       $('.modal-title').text(\"Tambah Tbl_siswa\");
+        $('#action').val(\"Add\");
+        $(\"#btn_ubah\").attr(\"id\", \"btn_simpan\");
+        $(\"#btn_simpan\").text(\"Simpan\");
                 " . $col_non_pk_clear . "
             }
-            $('#btn_ubah').on('click',function(){
-                " . $col_non_pk_form . "
-                $.ajax({
-                    type : \"POST\",
-                    url  : \"<?php echo base_url('" . $c_url . "/json_update')?>\",
-                    dataType : \"JSON\",
-                    //data : $('#ModalaForm').serialize(),
-                    data : {" . $col_non_pk_value . "},
-                    success: function(data){
-                        if(data.status){
-                            clear_data()
-                            $('#ModalaForm').modal('hide');
-                        } else {
-                            $('#ModalaForm .text-danger').html(data.error);
-                        }
-                    }
-                });
-                return false;
-            });
+            
         </script>";
 
 

@@ -96,26 +96,51 @@ if ($cruds == 'ajax_modal') {
     "->get_by_id(\$id);
             \necho json_encode(\$row);
             \n}
-            public function json_update()
+            public function json_form()
         {
             \$this->_rules();
             if (\$this->form_validation->run() === FALSE) {
                 echo json_encode(array(\"status\" => FALSE, \"error\" => validation_errors()));
             } else {
+            \$act = isset(\$_POST['actions']) ? \$_POST['actions'] : '';
+            if (\$act == 'Edit') {
+                \$id = $this->input->post('$pk', TRUE);
                 \$data = array(";
     foreach ($non_pk as $row) {
         $string .= "\n\t\t'" . $row['column_name'] . "' => \$this->input->post('" . $row['column_name'] . "',TRUE),";
     }
     $string .= "\n\t    );
                 
-                            \$update = \$this->" . $m . "->update(\$this->input->post('$pk', TRUE), \$data);
+                            \$update = \$this->" . $m . "->update(\$id, \$data);
                             if (\$update) {
                                 echo json_encode(array(\"status\" => TRUE));
                             } else {
                                 echo json_encode(array(\"status\" => FALSE, \"error\" => \"Failed to update data\"));
                             }
-        }}
-            ";
+        } else {
+           \$data = array(";
+    foreach ($non_pk as $row) {
+        $string .= "\n\t\t'" . $row['column_name'] . "' => \$this->input->post('" . $row['column_name'] . "',TRUE),";
+    }
+    $string .= "\n\t    );";
+    if(!$isai){
+            $string .= "\nif(! \$this->".$m."->is_exist(\$this->input->post('" . $pk. "'))){
+                 \$insert =\$this->".$m."->insert(\$data);
+                 if (\$insert) {
+                                echo json_encode(array(\"status\" => TRUE));
+                            } else {
+                                echo json_encode(array(\"status\" => FALSE, \"error\" => \"Failed to insert data\"));
+                            }
+            }else{
+            echo json_encode(array(\"status\" => FALSE, \"error\" => \"{$pk} is exist\"));
+                //\$this->session->set_flashdata('message', 'Create Record Faild, {$pk} is exist');
+            }";
+        }else{
+        $string .=    "\$this->".$m."->insert(\$data);
+            \$this->session->set_flashdata('message', 'Create Record Success');
+            redirect(site_url('$c_url'));";
+        }
+       $string .= " }\n}\n}";
 }
     
 $string .= "\n\n    public function read(\$id) 

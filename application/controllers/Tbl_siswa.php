@@ -50,8 +50,6 @@ class Tbl_siswa extends CI_Controller
             echo json_encode(array("status" => FALSE, "error" => validation_errors()));
         } else {
             $act = isset($_POST['actions']) ? $_POST['actions'] : '';
-            // var_dump($act);
-            // die;
             if ($act == 'Edit') {
                 $id = $this->input->post('idsiswa', TRUE);
                 $data = array(
