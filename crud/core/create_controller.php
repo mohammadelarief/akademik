@@ -103,7 +103,7 @@ if ($cruds == 'ajax_modal') {
             } else {
             \$act = isset(\$_POST['actions']) ? \$_POST['actions'] : '';
             if (\$act == 'Edit') {
-                \$id = $this->input->post('$pk', TRUE);
+                \$id = \$this->input->post('$pk', TRUE);
                 \$data = array(";
     foreach ($non_pk as $row) {
         $string .= "\n\t\t'" . $row['column_name'] . "' => \$this->input->post('" . $row['column_name'] . "',TRUE),";
