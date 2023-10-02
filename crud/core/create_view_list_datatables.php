@@ -117,7 +117,7 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                     };
                 };
 
-                var t = $(\"#mytable\").DataTable({
+                t = $(\"#mytable\").DataTable({
                     initComplete: function() {
                         var api = this.api();
                         $('#mytable_filter input')
@@ -209,11 +209,12 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                     }
                     $(\".ajs-header\").html(\"Konfirmasi\");
                 });
-            $('#add_button').click(function() {
-            $('#form')[0].reset();
-            $('.modal-title').text(\"Tambah " . $c_url . "\");
-            $('#action').val(\"Add\");
-        });
+                $('#add_button').click(function() {
+                $('#form')[0].reset();
+                $('.modal-title').text(\"Tambah " . $c_url . "\");
+                $('#action').val(\"Add\");
+                $('#actions').val(\"Add\");
+                });
             });
            $(document).on('submit', '#form', function(event) {
             event.preventDefault();
@@ -224,11 +225,27 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                 data: new FormData(this),
                 contentType: false,
                 processData: false,
+                dataType: 'json',
                 success: function(data) {
-                    alert(data);
-                    $('#form')[0].reset();
-                    $('#ModalaForm').modal('hide');
-                    t.ajax.reload();
+                    if (data.status) {
+                        $('#ModalaForm').modal('hide');
+                        $('#form')[0].reset();
+                        t.ajax.reload();
+                        clear_data();
+                    } else {
+                        $.each(data.messages, function(key, value) {
+                            var element = $('#' + key);
+    
+                            element.closest('div.form-group')
+                                .removeClass('has-error')
+                                .addClass(value.length > 0 ? 'has-error' : 'has-success')
+                                .find('.text-danger')
+                                .remove();
+    
+                            element.after(value)
+    
+                        });
+                    }
                 }
             });
         });
@@ -257,18 +274,21 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                             $(\"#ModalaForm\").modal(\"show\");
                             " . $col_non_pk_1 . "
                             $('#action').val(\"Edit\");
-                $('#actions').val(\"Edit\");
+                            $('#actions').val(\"Edit\");
                     }
                 });
                 return false;
             }
             function clear_data(){
                 $(\"[name=" . $pk . "]\").attr(\"readonly\", false);
-                       $('.modal-title').text(\"Tambah Tbl_siswa\");
-        $('#action').val(\"Add\");
-        $(\"#btn_ubah\").attr(\"id\", \"btn_simpan\");
-        $(\"#btn_simpan\").text(\"Simpan\");
-                " . $col_non_pk_clear . "
+                $('.modal-title').text(\"Tambah Tbl_siswa\");
+                $('#action').val(\"Add\");
+                $('#actions').val(\"Add\");
+                $(\"#btn_ubah\").attr(\"id\", \"btn_simpan\");
+                $(\"#btn_simpan\").text(\"Simpan\");
+                        " . $col_non_pk_clear . "
+                $(\".form-group\").toggleClass(\"has-success has-error\", false);
+                $(\".text-danger\").hide();
             }
             
         </script>";

@@ -43,21 +43,21 @@
 		<th>Status</th>
 		
             </tr><?php
-            foreach ($tbl_siswa_data as $tbl_siswa)
+            foreach ($siswa_data as $siswa)
             {
                 ?>
                 <tr>
 		      <td><?php echo ++$start ?></td>
-		      <td><?php echo $tbl_siswa->idsiswa ?></td>
-		      <td><?php echo $tbl_siswa->idperson ?></td>
-		      <td><?php echo $tbl_siswa->idkelas ?></td>
-		      <td><?php echo $tbl_siswa->tgl_masuk ?></td>
-		      <td><?php echo $tbl_siswa->info1 ?></td>
-		      <td><?php echo $tbl_siswa->info2 ?></td>
-		      <td><?php echo $tbl_siswa->user1 ?></td>
-		      <td><?php echo $tbl_siswa->tgl_insert ?></td>
-		      <td><?php echo $tbl_siswa->tglUpdate ?></td>
-		      <td><?php echo $tbl_siswa->status ?></td>	
+		      <td><?php echo $siswa->idsiswa ?></td>
+		      <td><?php echo $siswa->idperson ?></td>
+		      <td><?php echo $siswa->idkelas ?></td>
+		      <td><?php echo $siswa->tgl_masuk ?></td>
+		      <td><?php echo $siswa->info1 ?></td>
+		      <td><?php echo $siswa->info2 ?></td>
+		      <td><?php echo $siswa->user1 ?></td>
+		      <td><?php echo $siswa->tgl_insert ?></td>
+		      <td><?php echo $siswa->tglUpdate ?></td>
+		      <td><?php echo $siswa->status ?></td>	
                 </tr>
                 <?php
             }

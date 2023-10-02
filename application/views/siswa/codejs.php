@@ -30,7 +30,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "tbl_siswa/json",
+                "url": "siswa/json",
                 "type": "POST"
             },
             columns: [{
@@ -95,124 +95,105 @@
             if (e.which == 13) return false;
 
         });
-        // $("#myform").on('submit', function(e) {
-        //     var form = this
-        //     var rowsel = t.column(0).checkboxes.selected();
-        //     $.each(rowsel, function(index, rowId) {
-        //         $(form).append(
-        //             $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowId)
-        //         )
-        //     });
+        $("#myform").on('submit', function(e) {
+            var form = this
+            var rowsel = t.column(0).checkboxes.selected();
+            $.each(rowsel, function(index, rowId) {
+                $(form).append(
+                    $('<input>').attr('type', 'hidden').attr('name', 'id[]').val(rowId)
+                )
+            });
 
-        //     if (rowsel.join(",") == "") {
-        //         alertify.alert('', 'Tidak ada data terpilih!', function() {});
+            if (rowsel.join(",") == "") {
+                alertify.alert('', 'Tidak ada data terpilih!', function() {});
 
-        //     } else {
-        //         var prompt = alertify.confirm('Apakah anda yakin akan menghapus data tersebut?', 'Apakah anda yakin akan menghapus data tersebut?').set('labels', {
-        //             ok: 'Yakin',
-        //             cancel: 'Batal!'
-        //         }).set('onok', function(closeEvent) {
-        //             $.ajax({
-        //                 url: "tbl_siswa/deletebulk",
-        //                 type: "post",
-        //                 data: "msg = " + rowsel.join(","),
-        //                 success: function(response) {
-        //                     if (response == true) {
-        //                         location.reload();
-        //                     }
-        //                 },
-        //                 error: function(jqXHR, textStatus, errorThrown) {
-        //                     console.log(textStatus, errorThrown);
-        //                 }
-        //             });
+            } else {
+                var prompt = alertify.confirm('Apakah anda yakin akan menghapus data tersebut?', 'Apakah anda yakin akan menghapus data tersebut?').set('labels', {
+                    ok: 'Yakin',
+                    cancel: 'Batal!'
+                }).set('onok', function(closeEvent) {
+                    $.ajax({
+                        url: "siswa/deletebulk",
+                        type: "post",
+                        data: "msg = " + rowsel.join(","),
+                        success: function(response) {
+                            if (response == true) {
+                                location.reload();
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(textStatus, errorThrown);
+                        }
+                    });
 
-        //         });
-        //     }
-        //     $(".ajs-header").html("Konfirmasi");
-        // });
+                });
+            }
+            $(".ajs-header").html("Konfirmasi");
+        });
         $('#add_button').click(function() {
             $('#form')[0].reset();
-            $('.modal-title').text("Tambah Tbl_siswa");
+            $('.modal-title').text("Tambah siswa");
             $('#action').val("Add");
-        })
-        // $('#btn_ubah').on('click', function() {
-        //     var idsiswa = $("#idsiswa").val();
-        //     var idperson = $("#idperson").val();
-        //     var idkelas = $("#idkelas").val();
-        //     var tgl_masuk = $("#tgl_masuk").val();
-        //     var info1 = $("#info1").val();
-        //     var info2 = $("#info2").val();
-        //     var user1 = $("#user1").val();
-        //     var tgl_insert = $("#tgl_insert").val();
-        //     var tglUpdate = $("#tglUpdate").val();
-        //     var status = $("#status").val();
-        //     var action = $("#action").val();
-        //     $.ajax({
-        //         url: "<?php echo base_url('tbl_siswa/json_update'); ?>",
-        //         type: 'POST',
-        //         // data: $('#form').serialize(),
-        //         data: {
-        //             action: action,
-        //             idsiswa: idsiswa,
-        //             idperson: idperson,
-        //             idkelas: idkelas,
-        //             tgl_masuk: tgl_masuk,
-        //             info1: info1,
-        //             info2: info2,
-        //             user1: user1,
-        //             tgl_insert: tgl_insert,
-        //             tglUpdate: tglUpdate,
-        //             status: status
-        //         },
-        //         dataType: 'json',
-        //         success: function(data) {
-        //             // console.log(data);
-        //             if (data.status) {
-        //                 clear_data();
-        //                 $('#ModalaForm').modal('hide');
-        //                 t.ajax.reload();
-        //             } else {
-        //                 //     // $('#ModalaForm .text-danger').html(data.error);
-        //             }
-        //         }
-        //     });
-        //     // return false;
-        // });
-        $(document).on('submit', '#form', function(event) {
-            event.preventDefault();
+            $('#actions').val("Add");
+        });
+    });
+    $(document).on('submit', '#form', function(event) {
+        event.preventDefault();
 
-            $.ajax({
-                url: "<?php echo base_url('Tbl_siswa/json_update'); ?>",
-                method: 'POST',
-                data: new FormData(this),
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    alert(data);
-                    $('#form')[0].reset();
+        $.ajax({
+            url: "<?php echo base_url('siswa/json_form'); ?>",
+            method: 'POST',
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: function(data) {
+                if (data.status) {
                     $('#ModalaForm').modal('hide');
+                    $('#form')[0].reset();
                     t.ajax.reload();
+                    clear_data();
+                } else {
+                    $.each(data.messages, function(key, value) {
+                        var element = $('#' + key);
+
+                        element.closest('div.form-group')
+                            .removeClass('has-error')
+                            .addClass(value.length > 0 ? 'has-error' : 'has-success')
+                            .find('.text-danger')
+                            .remove();
+
+                        element.after(value)
+
+                    });
                 }
-            });
+            }
         });
     });
 
+    function confirmdelete(linkdelete) {
+        alertify.confirm("Apakah anda yakin akan  menghapus data tersebut?", function() {
+            location.href = linkdelete;
+        }, function() {
+            alertify.error("Penghapusan data dibatalkan.");
+        });
+        $(".ajs-header").html("Konfirmasi");
+        return false;
+    }
+
     function edit_data(id) {
         $("#myModalLabel").text("Ubah Tbl_siswa");
-
-        // $("#btn_simpan").attr("onclick", "updatedata()");
-        // $("#btn_simpan").attr("id", "btn_ubah");
-        // $("#btn_ubah").text("Ubah");
+        $("#btn_simpan").attr("id", "btn_ubah");
+        $("#btn_ubah").text("Ubah");
         $("[name=idsiswa]").attr("readonly", true);
         $.ajax({
-            url: "<?php echo base_url('tbl_siswa/json_get'); ?>",
+            url: "<?php echo base_url('siswa/json_get'); ?>",
             type: "POST",
             data: {
                 id: id
             },
             dataType: "json",
             success: function(data) {
-                // $.each(data, function(idsiswa, idperson, idkelas, tgl_masuk, info1, info2, user1, tgl_insert, tglUpdate, status) {
                 $("#ModalaForm").modal("show");
                 $("[name='idsiswa']").val(data.idsiswa);
                 $("[name='idperson']").val(data.idperson);
@@ -226,28 +207,16 @@
                 $("[name='status']").val(data.status);
                 $('#action').val("Edit");
                 $('#actions').val("Edit");
-                // });
             }
         });
         return false;
     }
 
-    // function confirmdelete(linkdelete) {
-    //     alertify.confirm("Apakah anda yakin akan  menghapus data tersebut?", function() {
-    //         location.href = linkdelete;
-    //     }, function() {
-    //         alertify.error("Penghapusan data dibatalkan.");
-    //     });
-    //     $(".ajs-header").html("Konfirmasi");
-    //     return false;
-    // }
-
-
-
     function clear_data() {
         $("[name=idsiswa]").attr("readonly", false);
         $('.modal-title').text("Tambah Tbl_siswa");
         $('#action').val("Add");
+        $('#actions').val("Add");
         $("#btn_ubah").attr("id", "btn_simpan");
         $("#btn_simpan").text("Simpan");
         $("[name='idsiswa']").val("");
@@ -260,5 +229,7 @@
         $("[name='tgl_insert']").val("");
         $("[name='tglUpdate']").val("");
         $("[name='status']").val("");
+        $(".form-group").toggleClass("has-success has-error", false);
+        $(".text-danger").hide();
     }
 </script>

@@ -84,8 +84,11 @@ $string .= "\n\t\$this->db->limit(\$limit, \$start);
     // insert data
     function insert(\$data)
     {
-        \$this->db->insert(\$this->table, \$data);
-    }
+        \$this->db->insert(\$this->table, \$data);";
+if ($cruds == 'ajax_modal') {
+    $string .= "\nreturn \$this->db->affected_rows() > 0;";
+}
+$string .= "\n}
 
     // update data
     function update(\$id, \$data)

@@ -98,8 +98,13 @@ if ($cruds == 'ajax_modal') {
             public function json_form()
         {
             \$this->_rules();
+            \$data = array('status' => false, 'messages' => array(), 'msg' => '');
             if (\$this->form_validation->run() === FALSE) {
-                echo json_encode(array(\"status\" => FALSE, \"error\" => validation_errors()));
+                foreach (\$_POST as \$key => \$value) {
+                    \$data['messages'][\$key] = form_error(\$key);
+                }
+                \$data['status'] = false;
+                \$data['msg'] = 'Error';
             } else {
             \$act = isset(\$_POST['actions']) ? \$_POST['actions'] : '';
             if (\$act == 'Edit') {
@@ -112,9 +117,14 @@ if ($cruds == 'ajax_modal') {
                 
                             \$update = \$this->" . $m . "->update(\$id, \$data);
                             if (\$update) {
-                                echo json_encode(array(\"status\" => TRUE));
+                                \$data['status'] = true;
+                    \$data['msg'] = 'Success to update data';
                             } else {
-                                echo json_encode(array(\"status\" => FALSE, \"error\" => \"Failed to update data\"));
+                                \$data['status'] = false;
+                    \$data['msg'] = 'Failed to update data';
+                    foreach (\$_POST as \$key => \$value) {
+                        \$data['messages'][\$key] = form_error(\$key);
+                    }
                             }
         } else {
            \$data = array(";
@@ -124,22 +134,27 @@ if ($cruds == 'ajax_modal') {
     $string .= "\n\t    );";
     if(!$isai){
             $string .= "\nif(! \$this->".$m."->is_exist(\$this->input->post('" . $pk. "'))){
-                 \$insert =\$this->".$m."->insert(\$data);
+                 \$insert =\$this->".$m. "->insert(\$data);
                  if (\$insert) {
-                                echo json_encode(array(\"status\" => TRUE));
+                    \$data['status'] = true;
+                    \$data['msg'] = 'Success to insert data';
                             } else {
-                                echo json_encode(array(\"status\" => FALSE, \"error\" => \"Failed to insert data\"));
+                                \$data['status'] = false;
+                        \$data['msg'] = 'Failed to insert data';
+                        foreach (\$_POST as \$key => \$value) {
+                            \$data['messages'][\$key] = form_error(\$key);
+                        }
                             }
             }else{
-            echo json_encode(array(\"status\" => FALSE, \"error\" => \"{$pk} is exist\"));
-                //\$this->session->set_flashdata('message', 'Create Record Faild, {$pk} is exist');
+                \$data['status'] = false;
+                \$data['msg'] = 'idsiswa is exist';
             }";
         }else{
         $string .=    "\$this->".$m."->insert(\$data);
             \$this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('$c_url'));";
         }
-       $string .= " }\n}\n}";
+    $string .= " }\n}\necho json_encode(\$data);\n}";
 }
     
 $string .= "\n\n    public function read(\$id) 
@@ -290,8 +305,13 @@ foreach ($non_pk as $row) {
     $string .= "\n\t\$this->form_validation->set_rules('".$row['column_name']."', '".  strtolower(label($row['column_name']))."', 'trim|required$int');";
 }    
 $string .= "\n\n\t\$this->form_validation->set_rules('$pk', '$pk', 'trim');";
-$string .= "\n\t\$this->form_validation->set_error_delimiters('<span class=\"text-danger\">', '</span>');
-    }";
+if ($cruds == 'ajax_modal') {
+    $string .= "\n\t\$this->form_validation->set_error_delimiters('<p class=\"text-danger\">', '</p>');
+}";
+} else {
+    $string .= "\n\t\$this->form_validation->set_error_delimiters('<span class=\"text-danger\">', '</span>');
+        }";
+}
 
 if ($export_excel == '1') {
     $string .= "\n\n    public function excel()
