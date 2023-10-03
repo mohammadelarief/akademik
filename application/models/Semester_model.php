@@ -25,9 +25,9 @@ class Semester_model extends CI_Model
         $this->datatables->add_column(
             'action',
             anchor(site_url('semester/read/$1'), '<i class="fa fa-search"></i>', 'class="btn btn-xs btn-primary"  data-toggle="tooltip" title="Detail"') . "  " . anchor(site_url('semester/update/$1'), '<i class="fa fa-edit"></i>', 'class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit"')
-            . "  " . '<button onclick="return updateAktif(\'$1\')" class="btn btn-xs btn-info update-aktif" data-id="$1"><i class="fas fa-check-circle"></i></button>'
+            . "  " . '<button onclick="return updateAktif(\'$1\',\'$2\')" class="btn btn-xs btn-info update-aktif" data-id="$1"><i class="fas fa-check-circle"></i></button>'
             ,
-            'idsemester'
+            'idsemester,idperiode'
         );
         return $this->datatables->generate();
     }
@@ -42,6 +42,21 @@ class Semester_model extends CI_Model
         $success = $this->db->update('tbl_semester', array('status' => 1));
 
         return $success;
+    }
+    public function check_periode($prd)
+    {
+        // $this->db->select('status');
+        $this->db->from('tbl_periode');
+        $this->db->where('idperiode', $prd); // Ganti 'variable_column_name' sesuai kolom yang sesuai di tabel
+        $this->db->where('aktif', 1); // Ganti 'variable_column_name' sesuai kolom yang sesuai di tabel
+
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // get all

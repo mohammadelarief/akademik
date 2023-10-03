@@ -162,12 +162,13 @@
         return false;
     }
 
-    function updateAktif(id) {
+    function updateAktif(id, prd) {
         $.ajax({
             url: '<?php echo base_url('semester/updateAktifAjax'); ?>',
             type: 'POST',
             data: {
-                id: id
+                id: id,
+                prd: prd
             },
             dataType: 'json',
             success: function(data) {
@@ -175,6 +176,9 @@
                     t.ajax.reload();
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('<a style="color:white">Data Semester Aktif Berhasil dirubah</a>');
+                } else {
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.error('<a style="color:white">Data Semester yang anda pilih bukan periode yang sedang aktif</a>');
                 }
             }
         });

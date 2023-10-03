@@ -38,8 +38,14 @@ class Semester extends CI_Controller
     public function updateAktifAjax()
     {
         $id = $this->input->post('id');
-        $this->Semester_model->updateAktif($id);
-        echo json_encode(array("status" => TRUE));
+        $prd = $this->input->post('prd');
+        $cek_prd =  $this->Semester_model->check_periode($prd);
+        if ($cek_prd) {
+            $this->Semester_model->updateAktif($id);
+            echo json_encode(array("status" => TRUE));
+        } else {
+            echo json_encode(array("status" => FALSE));
+        }
         // if ($success) {
         //     $this->session->set_flashdata('message', 'Aktivasi Record Success');
         // } else {
