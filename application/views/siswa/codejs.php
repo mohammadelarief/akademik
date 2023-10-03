@@ -272,6 +272,15 @@
             kls = $("#idkelas").val();
             t.ajax.reload();
         });
+        $('#reset_filter').click(function() {
+            // $('#datasiswakelas').css('display', 'block');
+            $("#idunit").val('all').trigger("change");
+            $("#idkelas").val('all').trigger("change");
+            periode = $("#idperiode").val();
+            unit = $("#idunit").val();
+            kls = $("#idkelas").val();
+            t.ajax.reload();
+        });
         $("#idunit").change(function() {
             unit = $("#idunit").val();
             prd = $("#idperiode").val();
@@ -288,7 +297,7 @@
                     var html = '';
                     var i;
 
-                    html += '<option value="[SEMUA KELAS]" selected="selected">[SEMUA KELAS]</option>';
+                    html += '<option value="all" selected="selected">[SEMUA KELAS]</option>';
                     for (i = 0; i < data.length; i++) {
                         html += '<option value=' + data[i].idkelas + '>' + data[i].keterangan + '</option>';
                     }

@@ -69,7 +69,7 @@ if (!function_exists('cmb_filter')) {
             $ci->db->order_by($field, $order);
         }
         $data = $ci->db->get($table)->result();
-        $cmb .= "<option value='" . $default . "' selected='selected'>" . $default . "</option>";
+        $cmb .= "<option value='all' selected='selected'>" . $default . "</option>";
 
         foreach ($data as $d) {
             $cmb .= "<option value='" . $d->$pk . "'";

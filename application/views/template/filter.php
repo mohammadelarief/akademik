@@ -25,7 +25,7 @@
 
             <div class="col-sm-7">
                 <select class="form-control select2 filter" id="idkelas" style="width: 100%;">
-                    <option value="[SEMUA KELAS]" selected="selected">[SEMUA KELAS]</option>
+                    <option value="all" selected="selected">[SEMUA KELAS]</option>
 
                 </select>
             </div>
@@ -38,6 +38,7 @@
 
             <div class="col-sm-7">
                 <button type="submit" id="filter_get" class="btn btn-warning">Apply Filter</button>
+                <button type="submit" id="reset_filter" class="btn btn-danger">Reset Filter</button>
             </div>
         </div>
     </div>

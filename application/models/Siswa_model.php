@@ -27,13 +27,13 @@ class Siswa_model extends CI_Model
         $this->datatables->join('tbl_unit u', 'u.idunit = k.idunit');
         $this->datatables->add_column('action', '<button onclick="return edit_data(\'$1\')" class="btn btn-xs btn-warning item_edit" data-id="$1"><i class="fa fa-edit"></i></button>' . "  " . anchor(site_url('siswa/delete/$1'), '<i class="fa fa-trash"></i>', 'class="btn btn-xs btn-danger" onclick="return confirmdelete(\'siswa/delete/$1\')" data-toggle="tooltip" title="Delete"'), 'idsiswa');
         $periode = $this->input->post('periode');
-        $unit = $this->input->post('unit', '[SEMUA UNIT]');
-        $kelas = $this->input->post('kls', '[SEMUA KELAS]');
+        $unit = $this->input->post('unit', 'all');
+        $kelas = $this->input->post('kls', 'all');
         $this->datatables->where('p.idperiode', $periode);
-        if ($unit != '[SEMUA UNIT]') {
+        if ($unit != 'all') {
             $this->datatables->where("u.idunit='{$unit}'");
         }
-        if ($kelas != '[SEMUA KELAS]') {
+        if ($kelas != 'all') {
             $this->datatables->where("k.idkelas='{$kelas}'");
         }
         // if ($periode !== null && $company <> 'ADMIN') {
