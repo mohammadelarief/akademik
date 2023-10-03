@@ -17,11 +17,53 @@ class Siswa_model extends CI_Model
 
     // datatables
     function json() {
-        $this->datatables->select('idsiswa,idperson,idkelas,tgl_masuk,info1,info2,user1,tgl_insert,tglUpdate,status');
-        $this->datatables->from('tbl_siswa');
+        $company = $this->ion_auth->user()->row()->company;
+        $this->datatables->select('s.idsiswa,s.idperson,s.idkelas,s.tgl_masuk,s.info1,s.info2,s.user1,s.tgl_insert,s.tglUpdate,s.status');
+        $this->datatables->from("tbl_siswa s");
         //add this line for join
-        //$this->datatables->join('table2', 'tbl_siswa.field = table2.field');
-$this->datatables->add_column('action', '<button onclick="return edit_data(\'$1\')" class="btn btn-xs btn-warning item_edit" data-id="$1"><i class="fa fa-edit"></i></button>'."  ".anchor(site_url('siswa/delete/$1'),'<i class="fa fa-trash"></i>', 'class="btn btn-xs btn-danger" onclick="return confirmdelete(\'siswa/delete/$1\')" data-toggle="tooltip" title="Delete"'), 'idsiswa');return $this->datatables->generate();
+        $this->datatables->join('tbl_kelas k', 'k.idkelas = s.idkelas');
+        $this->datatables->join('tbl_semester sms', 'sms.idsemester = k.idsemester');
+        $this->datatables->join('tbl_periode p', 'p.idperiode = sms.idperiode');
+        $this->datatables->join('tbl_unit u', 'u.idunit = k.idunit');
+        $this->datatables->add_column('action', '<button onclick="return edit_data(\'$1\')" class="btn btn-xs btn-warning item_edit" data-id="$1"><i class="fa fa-edit"></i></button>' . "  " . anchor(site_url('siswa/delete/$1'), '<i class="fa fa-trash"></i>', 'class="btn btn-xs btn-danger" onclick="return confirmdelete(\'siswa/delete/$1\')" data-toggle="tooltip" title="Delete"'), 'idsiswa');
+        $periode = $this->input->post('periode');
+        $unit = $this->input->post('unit', '[SEMUA UNIT]');
+        $kelas = $this->input->post('kls', '[SEMUA KELAS]');
+        $this->datatables->where('p.idperiode', $periode);
+        if ($unit != '[SEMUA UNIT]') {
+            $this->datatables->where("u.idunit='{$unit}'");
+        }
+        if ($kelas != '[SEMUA KELAS]') {
+            $this->datatables->where("k.idkelas='{$kelas}'");
+        }
+        // if ($periode !== null && $company <> 'ADMIN') {
+        //     $this->datatables->where('p.idperiode', $periode);
+        //     // $this->datatables->where('u.idunit', $company);
+        // } else if ($periode !== null && $unit !== '[SEMUA UNIT]' && $kelas !== '[SEMUA KELAS]' && $company = 'ADMIN') {
+        //     $this->datatables->where('p.idperiode', $periode);
+        //     $this->datatables->where('u.idunit', $unit);
+        //     $this->datatables->where('k.idkelas', $kelas);
+        // }
+        return $this->datatables->generate();
+    }
+
+    public function getKelas($idunit, $periode)
+    {
+        $idunit = $this->input->post('unit');
+        $periode = $this->input->post('periode');
+        $company = $this->ion_auth->user()->row()->company;
+        $this->db->select('k.idkelas,k.keterangan');
+        $this->db->from('tbl_kelas k');
+        $this->db->join('tbl_semester s', 's.idsemester = k.idsemester');
+        $this->db->join('tbl_periode p', 'p.idperiode = s.idperiode');
+        $this->db->join('tbl_unit u', 'u.idunit = k.idunit');
+        $this->db->where('p.idperiode', $periode);
+        $this->db->where('u.idunit', $idunit);
+        $this->db->where('k.aktif', 1);
+        if ($company <> 'ADMIN') {
+            $this->db->where('u.idunit', $company);
+        }
+        return $this->db->get()->result();
     }
 
     // get all

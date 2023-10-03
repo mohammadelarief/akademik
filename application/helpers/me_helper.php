@@ -45,11 +45,31 @@ if (!function_exists('cmb_dinamis')) {
     function cmb_dinamis($name, $table, $field, $pk, $selected = null, $order = null)
     {
         $ci = get_instance();
-        $cmb = "<select name='$name' class='form-control filter select2' ids='" . $pk . "'>";
+        $cmb = '<select class="form-control filter select2" id="' . $pk . '" name="' . $name . '" style="width: 100%;">';
         if ($order) {
             $ci->db->order_by($field, $order);
         }
         $data = $ci->db->get($table)->result();
+
+        foreach ($data as $d) {
+            $cmb .= "\n<option value='" . $d->$pk . "'";
+            $cmb .= $selected == $d->$pk ? " selected='selected'" : '';
+            $cmb .= ">" .  strtoupper($d->$field) . "</option>";
+        }
+        $cmb .= "\n</select>\n";
+        return $cmb;
+    }
+}
+if (!function_exists('cmb_filter')) {
+    function cmb_filter($default, $name, $table, $field, $pk, $selected = null, $order = null)
+    {
+        $ci = get_instance();
+        $cmb = "<select name='" . $name . "' class='form-control filter select2' id='" . $pk . "' style='width: 100%;'>";
+        if ($order) {
+            $ci->db->order_by($field, $order);
+        }
+        $data = $ci->db->get($table)->result();
+        $cmb .= "<option value='" . $default . "' selected='selected'>" . $default . "</option>";
 
         foreach ($data as $d) {
             $cmb .= "<option value='" . $d->$pk . "'";

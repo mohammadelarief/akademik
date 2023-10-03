@@ -26,6 +26,7 @@ class Siswa extends CI_Controller
         ];
         $data['code_js'] = 'siswa/codejs';
         $data['page'] = 'siswa/Siswa_list';
+        $data['filter'] = 'template/filter';
         $data['modal'] = 'siswa/Siswa_modal';
         $this->load->view('template/backend', $data);
     }
@@ -124,6 +125,15 @@ class Siswa extends CI_Controller
             'hasil' => $result
         );
         echo json_encode($response);
+    }
+
+    function get_kelas()
+    {
+        $idunit = $this->input->post('idunit');
+        $periode = $this->input->post('periode');
+        // print_r($idunit);
+        $data = $this->Siswa_model->getKelas($idunit, $periode);
+        echo json_encode($data);
     }
 
     public function read($id)
