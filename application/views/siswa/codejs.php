@@ -130,11 +130,24 @@
             }
             $(".ajs-header").html("Konfirmasi");
         });
-        $('#add_button').click(function() {
-            $('#form')[0].reset();
-            $('.modal-title').text("Tambah siswa");
-            $('#action').val("Add");
-            $('#actions').val("Add");
+    });
+    $('#add_button').click(function() {
+        $('#form')[0].reset();
+        $('.modal-title').text("Tambah siswa");
+        $('#action').val("Add");
+        $('#actions').val("Add");
+        var val = "S";
+        $.ajax({
+            url: "<?php echo base_url('siswa/uniqid'); ?>",
+            type: "POST",
+            data: {
+                _uniq: val
+            },
+            dataType: "json",
+            success: function(data) {
+                // console.log(data.hasil);
+                $("[name='idsiswa']").val(data.hasil);
+            }
         });
     });
     $(document).on('submit', '#form', function(event) {
@@ -185,7 +198,7 @@
         $("#myModalLabel").text("Ubah Tbl_siswa");
         $("#btn_simpan").attr("id", "btn_ubah");
         $("#btn_ubah").text("Ubah");
-        $("[name=idsiswa]").attr("readonly", true);
+        // $("[name=idsiswa]").attr("readonly", true);
         $.ajax({
             url: "<?php echo base_url('siswa/json_get'); ?>",
             type: "POST",
@@ -213,7 +226,7 @@
     }
 
     function clear_data() {
-        $("[name=idsiswa]").attr("readonly", false);
+        // $("[name=idsiswa]").attr("readonly", false);
         $('.modal-title').text("Tambah Tbl_siswa");
         $('#action').val("Add");
         $('#actions').val("Add");
