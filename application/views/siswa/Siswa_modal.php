@@ -1,5 +1,5 @@
 <!-- MODAL FORM -->
-<div class="modal fade" id="ModalaForm" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+<div class="modal fade" id="ModalaForm" tabindex="-1" role="dialog" aria-labelledby="largeModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -23,7 +23,10 @@
                     <div class="form-group">
                         <label class="control-label col-xs-3">Idkelas</label>
                         <div class="col-xs-9">
-                            <input type="text" name="idkelas" id="idkelas" class="form-control" placeholder="Idkelas" />
+                            <select class="form-control select2 filter" id="idkelas_" name="idkelas" style="width: 100%;">
+
+                            </select>
+                            <!-- <input type="text" name="idkelas" id="idkelas" class="form-control" placeholder="Idkelas" /> -->
                         </div>
                     </div>
                     <div class="form-group">

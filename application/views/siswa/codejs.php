@@ -146,23 +146,52 @@
         // });
     });
     $('#add_button').click(function() {
-        $('#form')[0].reset();
-        $('.modal-title').text("Tambah siswa");
-        $('#action').val("Add");
-        $('#actions').val("Add");
-        var val = "S";
-        $.ajax({
-            url: "<?php echo base_url('siswa/uniqid'); ?>",
-            type: "POST",
-            data: {
-                _uniq: val
-            },
-            dataType: "json",
-            success: function(data) {
-                // console.log(data.hasil);
-                $("[name='idsiswa']").val(data.hasil);
-            }
-        });
+        val = "S";
+        unit = $("#idunit").val();
+        prd = $("#idperiode").val();
+        if (unit == 'all') {
+            alertify.set('notifier', 'position', 'top-right');
+            alertify.success('<a style="color:white">Silahkan Pilih Unit Dahulu</a>');
+        } else {
+            $('#ModalaForm').modal('show');
+            $('#form')[0].reset();
+            $('.modal-title').text("Tambah siswa");
+            $('#action').val("Add");
+            $('#actions').val("Add");
+            $.ajax({
+                url: "<?php echo base_url(); ?>siswa/get_kelas",
+                method: "POST",
+                data: {
+                    unit: unit,
+                    periode: prd
+                },
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    var i;
+
+                    // html += '<option value="all" selected="selected">[SEMUA KELAS]</option>';
+                    for (i = 0; i < data.length; i++) {
+                        html += '<option value=' + data[i].idkelas + '>' + data[i].keterangan + '</option>';
+                    }
+                    $('#idkelas_').html(html);
+                }
+            });
+            $.ajax({
+                url: "<?php echo base_url('siswa/uniqid'); ?>",
+                type: "POST",
+                data: {
+                    _uniq: val,
+                    unit: unit
+                },
+                dataType: "json",
+                success: function(data) {
+                    // console.log(data.hasil);
+                    $("[name='idsiswa']").val(data.hasil);
+                }
+            });
+        }
     });
     $(document).on('submit', '#form', function(event) {
         event.preventDefault();
@@ -213,6 +242,28 @@
         $("#btn_simpan").attr("id", "btn_ubah");
         $("#btn_ubah").text("Ubah");
         // $("[name=idsiswa]").attr("readonly", true);
+        unit = $("#idunit").val();
+        prd = $("#idperiode").val();
+        $.ajax({
+            url: "<?php echo base_url(); ?>siswa/get_kelas",
+            method: "POST",
+            data: {
+                unit: unit,
+                periode: prd
+            },
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                var html = '';
+                var i;
+
+                // html += '<option value="all" selected="selected">[SEMUA KELAS]</option>';
+                for (i = 0; i < data.length; i++) {
+                    html += '<option value=' + data[i].idkelas + '>' + data[i].keterangan + '</option>';
+                }
+                $('#idkelas_').html(html);
+            }
+        });
         $.ajax({
             url: "<?php echo base_url('siswa/json_get'); ?>",
             type: "POST",
