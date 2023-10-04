@@ -83,13 +83,13 @@ class Menu extends CI_Controller
             'id_menu_type' => set_value('id_menu_type'),
     	    'id_groupss' => set_value('id_groupss'),
     	);
-        $data["menu_type"] = $this->db->query("select * from menu_type")->result();
+        $data["menu_type"] = $this->db->query("select * from `menu_type`")->result();
         $data['title'] = 'Menu';
         $data['subtitle'] = '';
         $data['crumb'] = [
             'Dashboard' => '',
         ];
-        $data["groups"] = $this->db->query("select * from groups")->result();
+        $data["groups"] = $this->db->query("select * from `groups`")->result();
         $data['parent'] = $this->db->query("select id_menu, label from menu")->result();;
         $data['code_js'] = 'menu/codejsform';
         $data['page'] = 'menu/menu_form';
