@@ -134,7 +134,7 @@ if ($cruds == 'ajax_modal') {
     $string .= "\n\t    );";
     if(!$isai){
             $string .= "\nif(! \$this->".$m."->is_exist(\$this->input->post('" . $pk. "'))){
-                 \$insert =\$this->".$m. "->insert(\$data);
+                 \n\$insert =\$this->" . $m . "->insert(\$data);
                  if (\$insert) {
                     \$data['status'] = true;
                     \$data['msg'] = 'Success to insert data';
@@ -150,9 +150,17 @@ if ($cruds == 'ajax_modal') {
                 \$data['msg'] = 'idsiswa is exist';
             }";
         }else{
-        $string .=    "\$this->".$m."->insert(\$data);
-            \$this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('$c_url'));";
+        $string .=    "\n\$insert =\$this->" . $m . "->insert(\$data);
+        if (\$insert) {
+           \$data['status'] = true;
+           \$data['msg'] = 'Success to insert data';
+                   } else {
+                       \$data['status'] = false;
+               \$data['msg'] = 'Failed to insert data';
+               foreach (\$_POST as \$key => \$value) {
+                   \$data['messages'][\$key] = form_error(\$key);
+               }
+                   }";
         }
     $string .= " }\n}\necho json_encode(\$data);\n}";
 }

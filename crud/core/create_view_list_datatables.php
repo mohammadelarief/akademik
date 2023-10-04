@@ -271,8 +271,11 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                     },
                     dataType: \"json\",
                     success: function(data) {
-                            $(\"#ModalaForm\").modal(\"show\");
-                            " . $col_non_pk_1 . "
+                            $(\"#ModalaForm\").modal(\"show\");";
+if ($isai) {
+    $string2 .= "\n$(\"[name=" . $pk . "]\").val(data." . $pk . ");\n";
+}
+$string2 .= "" . $col_non_pk_1 . "
                             $('#action').val(\"Edit\");
                             $('#actions').val(\"Edit\");
                     }
@@ -285,7 +288,11 @@ $col_non_pk_2 = implode(',', $column_non_pk_2);
                 $('#action').val(\"Add\");
                 $('#actions').val(\"Add\");
                 $(\"#btn_ubah\").attr(\"id\", \"btn_simpan\");
-                $(\"#btn_simpan\").text(\"Simpan\");
+                $(\"#btn_simpan\").text(\"Simpan\");";
+if ($isai) {
+    $string2 .= "\n$(\"[name=" . $pk . "]\").val(\"\");\n";
+}
+$string2 .= "
                         " . $col_non_pk_clear . "
                 $(\".form-group\").toggleClass(\"has-success has-error\", false);
                 $(\".text-danger\").hide();

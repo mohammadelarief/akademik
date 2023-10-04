@@ -27,7 +27,9 @@ foreach ($non_pk as $row) {
                     </div>";
     }
 }
-
+if ($isai) {
+    $string .= "\n\t    <input type=\"hidden\" name=\"" . $pk . "\" /> ";
+}
 $string .= "</div>
  
                 <div class=\"modal-footer\">
