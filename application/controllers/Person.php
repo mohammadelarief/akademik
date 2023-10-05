@@ -26,6 +26,7 @@ class Person extends CI_Controller
         ];
         $data['code_js'] = 'person/codejs';
         $data['page'] = 'person/Person_list';
+        $data['modal'] = 'person/Person_modal';
         $this->load->view('template/backend', $data);
     }
 
@@ -35,7 +36,94 @@ class Person extends CI_Controller
         echo $this->Person_model->json();
     }
 
-    public function read($id)
+    public function json_get()
+    {
+        $id = $this->input->post("id");
+        $row = $this->Person_model->get_by_id($id);
+
+        echo json_encode($row);
+    }
+
+    public function json_form()
+    {
+        $this->_rules();
+        $data = array('status' => false, 'messages' => array(), 'msg' => '');
+        if ($this->form_validation->run() === FALSE) {
+            foreach ($_POST as $key => $value) {
+                $data['messages'][$key] = form_error($key);
+            }
+            $data['status'] = false;
+            $data['msg'] = 'Silahkan Lengkapi Data dahulu';
+        } else {
+            $act = isset($_POST['actions']) ? $_POST['actions'] : '';
+            if ($act == 'Edit') {
+                $id = $this->input->post('id', TRUE);
+                $data = array(
+                    'idperson' => $this->input->post('idperson', TRUE),
+                    'nama' => $this->input->post('nama', TRUE),
+                    'gender' => $this->input->post('gender', TRUE),
+                    'imageId' => $this->input->post('imageId', TRUE),
+                    'status' => $this->input->post('status', TRUE),
+                    'tipe' => $this->input->post('tipe', TRUE),
+                    'info1' => $this->input->post('info1', TRUE),
+                    'info2' => $this->input->post('info2', TRUE),
+                    'user1' => $this->input->post('user1', TRUE),
+                    'password' => $this->input->post('password', TRUE),
+                    'tgl_insert' => $this->input->post('tgl_insert', TRUE),
+                    'tgl_update' => $this->input->post('tgl_update', TRUE),
+                );
+
+                $update = $this->Person_model->update($id, $data);
+                if ($update) {
+                    $data['status'] = true;
+                    $data['msg'] = 'Data Berhasil di Update';
+                } else {
+                    $data['status'] = false;
+                    $data['msg'] = 'Data Gagal di Update';
+                    foreach ($_POST as $key => $value) {
+                        $data['messages'][$key] = form_error($key);
+                    }
+                }
+            } else {
+                $data = array(
+                    'idperson' => $this->input->post('idperson', TRUE),
+                    'nama' => $this->input->post('nama', TRUE),
+                    'gender' => $this->input->post('gender', TRUE),
+                    'imageId' => $this->input->post('imageId', TRUE),
+                    'status' => $this->input->post('status', TRUE),
+                    'tipe' => $this->input->post('tipe', TRUE),
+                    'info1' => $this->input->post('info1', TRUE),
+                    'info2' => $this->input->post('info2', TRUE),
+                    'user1' => $this->input->post('user1', TRUE),
+                    'password' => $this->input->post('password', TRUE),
+                    'tgl_insert' => $this->input->post('tgl_insert', TRUE),
+                    'tgl_update' => $this->input->post('tgl_update', TRUE),
+                );
+                $insert = $this->Person_model->insert($data);
+                if ($insert) {
+                    $data['status'] = true;
+                    $data['msg'] = 'Data Berhasil di Tambah';
+                } else {
+                    $data['status'] = false;
+                    $data['msg'] = 'Data Gagal di Tambah';
+                    foreach ($_POST as $key => $value) {
+                        $data['messages'][$key] = form_error($key);
+                    }
+                }
+            }
+        }
+        echo json_encode($data);
+    }
+    public function idperson_()
+    {
+        $result = idperson_();
+        $response = array(
+            'hasil' => $result
+        );
+        echo json_encode($response);
+    }
+
+    public function read($id) 
     {
         $row = $this->Person_model->get_by_id($id);
         if ($row) {
@@ -68,13 +156,13 @@ class Person extends CI_Controller
         }
     }
 
-    public function create()
+    public function create() 
     {
         $data = array(
-            'button' => 'Tambah',
+            'button' => 'Create',
             'action' => site_url('person/create_action'),
             'id' => set_value('id'),
-            'idperson' => idperson_(),
+            'idperson' => set_value('idperson'),
             'nama' => set_value('nama'),
             'gender' => set_value('gender'),
             'imageId' => set_value('imageId'),
@@ -97,7 +185,7 @@ class Person extends CI_Controller
         $this->load->view('template/backend', $data);
     }
 
-    public function create_action()
+    public function create_action() 
     {
         $this->_rules();
 
@@ -124,7 +212,7 @@ class Person extends CI_Controller
         }
     }
 
-    public function update($id)
+    public function update($id) 
     {
         $row = $this->Person_model->get_by_id($id);
 
@@ -160,7 +248,7 @@ class Person extends CI_Controller
         }
     }
 
-    public function update_action()
+    public function update_action() 
     {
         $this->_rules();
 
@@ -188,7 +276,7 @@ class Person extends CI_Controller
         }
     }
 
-    public function delete($id)
+    public function delete($id) 
     {
         $row = $this->Person_model->get_by_id($id);
 
@@ -213,7 +301,7 @@ class Person extends CI_Controller
         echo $delete;
     }
 
-    public function _rules()
+    public function _rules() 
     {
         $this->form_validation->set_rules('idperson', 'idperson', 'trim|required');
         $this->form_validation->set_rules('nama', 'nama', 'trim|required');
@@ -229,8 +317,9 @@ class Person extends CI_Controller
         $this->form_validation->set_rules('tgl_update', 'tgl update', 'trim');
 
         $this->form_validation->set_rules('id', 'id', 'trim');
-        $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+        $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
     }
+
 }
 
 /* End of file Person.php */
