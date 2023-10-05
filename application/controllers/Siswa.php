@@ -136,6 +136,21 @@ class Siswa extends CI_Controller
         echo json_encode($data);
     }
 
+    function get_autocomplete()
+    {
+        if (isset($_GET['term'])) {
+            $result = $this->Siswa_model->search_idperson($_GET['term']);
+            if (count($result) > 0) {
+                foreach ($result as $row)
+                    $arr_result[] = array(
+                        'value' => $row->idperson,
+                        'label'    => $row->nama,
+                    );
+                echo json_encode($arr_result);
+            }
+        }
+    }
+
     public function read($id)
     {
         $row = $this->Siswa_model->get_by_id($id);

@@ -3,6 +3,8 @@
     //select2
     $('.select2').select2();
 </script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script type="text/javascript">
     let periode = $("#idperiode").val(),
         unit = $("#idunit").val(),
@@ -191,6 +193,33 @@
                     $("[name='idsiswa']").val(data.hasil);
                 }
             });
+            var autocompleteInput = $("#idperson");
+            autocompleteInput.autocomplete({
+                source: "<?= site_url('siswa/get_autocomplete'); ?>",
+                // source: function(request, response) {
+                //     $.ajax({
+                //         url: "siswa/get_autocomplete", // Gantilah dengan URL yang sesuai
+                //         dataType: "json",
+                //         data: {
+                //             term: request.term
+                //         },
+                //         success: function(data) {
+                //             response(data); // Menampilkan hasil autocomplete
+                //         }
+                //     });
+                // },
+                select: function(event, ui) {
+                    $('[name="idperson"]').val(ui.item.value);
+                    // $('[name="nama_lengkap"]').val(ui.item.label);
+                },
+                minLength: 3 // Jumlah karakter minimum sebelum permintaan AJAX dilakukan
+            }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                return $("<li>")
+                    .append("<div class='box box-solid'><div class='box-header with-border bg-info'><i class='fa fa-user'></i><h3 class='box-title'>" + item.label + "</h3></div><div class='box-body' style='margin-top:-17px;'><div><br><span class='label bg-gray-active'>ID Person</span><span class='pull-right'>" + item.value + "</span><br><span class='label bg-gray-active'>Nama</span><span class='pull-right'>" + item.label + "</span></div></div></div>")
+                    .appendTo(ul);
+            };
+            autocompleteInput.autocomplete("option", "appendTo", ".eventInsForm");
+
         }
     });
     $(document).on('submit', '#form', function(event) {

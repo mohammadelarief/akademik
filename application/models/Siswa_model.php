@@ -66,6 +66,16 @@ class Siswa_model extends CI_Model
         return $this->db->get()->result();
     }
 
+    function search_idperson($title)
+    {
+        $this->db->from('tbl_person p');
+        $this->db->like('p.idperson', $title, 'both');
+        $this->db->order_by('p.idperson', 'ASC');
+        $this->db->where('p.tipe =', 'S');
+        $this->db->limit(10);
+        return $this->db->get()->result();
+    }
+
     // get all
     function get_all()
     {
