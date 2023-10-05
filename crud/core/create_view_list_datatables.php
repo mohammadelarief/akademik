@@ -21,7 +21,7 @@ $string = "<div class=\"row\">
            <div class=\"row\" style=\"margin-bottom: 10px\">
             <div class=\"col-xs-12 col-md-4\">";
 if ($cruds == 'ajax_modal') {
-    $string .= "<a href=\"#\" class=\"btn btn-sm btn-success\" data-toggle=\"modal\" data-target=\"#ModalaForm\"><span class=\"fa fa-plus\"></span> Create</a>";
+    $string .= "<a href=\"#\" id=\"add_button\" class=\"btn btn-sm btn-success\" data-toggle=\"modal\" data-target=\"#ModalaForm\"><span class=\"fa fa-plus\"></span> Create</a>";
 } else {
     $string .= "<?php echo anchor(site_url('" . $c_url . "/create'), '<i class=\"fa fa-plus\"></i> Create', 'class=\"btn bg-purple\"'); ?>";
 }
