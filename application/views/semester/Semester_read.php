@@ -42,7 +42,7 @@
                         <td><?php echo $status; ?></td>
                     </tr>
                     <tr>
-                        <td><a href="<?php echo site_url('semester') ?>" class="btn bg-purple">Cancel</a></td>
+                        <td><a href="<?php echo site_url('periode') ?>" class="btn bg-purple">Cancel</a></td>
                     </tr>
                 </table>
             </div>

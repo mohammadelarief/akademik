@@ -84,7 +84,7 @@ class Semester extends CI_Controller
             $this->load->view('template/backend', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('semester'));
+            redirect(site_url('periode'));
         }
     }
 
@@ -131,7 +131,7 @@ class Semester extends CI_Controller
             if (!$this->Semester_model->is_exist($this->input->post('idsemester'))) {
                 $this->Semester_model->insert($data);
                 $this->session->set_flashdata('message', 'Create Record Success');
-                redirect(site_url('semester'));
+                redirect(site_url('periode'));
             } else {
                 $this->create();
                 $this->session->set_flashdata('message', 'Create Record Faild, idsemester is exist');
@@ -165,7 +165,7 @@ class Semester extends CI_Controller
             $this->load->view('template/backend', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('semester'));
+            redirect(site_url('periode'));
         }
     }
 
@@ -188,7 +188,7 @@ class Semester extends CI_Controller
 
             $this->Semester_model->update($this->input->post('idsemester', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('semester'));
+            redirect(site_url('periode'));
         }
     }
 

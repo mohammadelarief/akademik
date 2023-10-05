@@ -43,7 +43,7 @@
                         <input type="text" class="form-control" name="status" id="status" placeholder="Status" value="<?php echo $status; ?>" />
                     </div>
                     <button type="submit" class="btn btn-primary"><?php echo $button ?></button>
-                    <a href="<?php echo site_url('semester') ?>" class="btn btn-default">Cancel</a>
+                    <a href="<?php echo site_url('periode') ?>" class="btn btn-default">Cancel</a>
                 </form>
             </div>
         </div>
