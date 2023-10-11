@@ -18,7 +18,7 @@ class " . $c . " extends CI_Controller
         \$this->load->library('form_validation');";
 
 if ($jenis_tabel <> 'reguler_table') {
-    $string .= "        \n\t\$this->load->library('datatables');";
+    $string .= "        \n\t\t\$this->load->library('datatables');";
 }
         
 $string .= "
@@ -76,9 +76,9 @@ $string .="\n\n    public function index()
         \$data['code_js'] = '$c_url/codejs';
         \$data['page'] = '$c_url/$v_list';";
     if ($cruds == 'ajax_modal') {
-        $string .= "\n\t\$data['modal'] = '$c_url/$v_modal';";
+        $string .= "\n\t\t\$data['modal'] = '$c_url/$v_modal';";
     };
-    $string .= "\n\t\$this->load->view('template/backend', \$data);
+    $string .= "\n\t\t\$this->load->view('template/backend', \$data);
     } 
     
     public function json() {
@@ -93,9 +93,9 @@ if ($cruds == 'ajax_modal') {
         {
             \$id = \$this->input->post(\"id\");
             \$row = \$this->" . $m . "->get_by_id(\$id);
-            \necho json_encode(\$row);
+            \n\t\t\techo json_encode(\$row);
             \n}\n
-            public function json_form()
+    public function json_form()
         {
             \$this->_rules();
             \$data = array('status' => false, 'messages' => array(), 'msg' => '');
@@ -111,11 +111,11 @@ if ($cruds == 'ajax_modal') {
                 \$id = \$this->input->post('$pk', TRUE);
                 \$data = array(";
     foreach ($non_pk as $row) {
-        $string .= "\n\t\t'" . $row['column_name'] . "' => \$this->input->post('" . $row['column_name'] . "',TRUE),";
+        $string .= "\n\t\t\t\t\t'" . $row['column_name'] . "' => \$this->input->post('" . $row['column_name'] . "',TRUE),";
     }
     $string .= "\n\t    );
                 
-                            \$update = \$this->" . $m . "->update(\$id, \$data);
+                    \$update = \$this->" . $m . "->update(\$id, \$data);
                             if (\$update) {
                                 \$data['status'] = true;
                     \$data['msg'] = 'Success to update data';
