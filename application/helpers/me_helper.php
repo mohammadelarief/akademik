@@ -147,3 +147,29 @@ if (!function_exists('sessionsDb')) {
         }
     }
 }
+
+if (!function_exists('get_aktif_table')) {
+    function get_aktif_table($table_name, $column_name, $col_where, $val_where)
+    {
+        $CI = &get_instance();
+        $CI->load->database();
+
+        // Pastikan $table_name dan $column_name adalah string yang tidak kosong
+        if (!empty($table_name) && !empty($column_name) && !empty($col_where) && !empty($val_where)) {
+            // Ambil data dari kolom
+            $query = $CI->db->select($column_name)
+                ->from($table_name)
+                ->where($col_where, $val_where)
+                ->get();
+
+            if ($query->num_rows() > 0) {
+                $row = $query->row();
+                return $row->$column_name;
+            } else {
+                return false; // Kolom kosong
+            }
+        } else {
+            return false; // Data tidak valid
+        }
+    }
+}
