@@ -65,6 +65,20 @@ class Siswa_model extends CI_Model
         }
         return $this->db->get()->result();
     }
+    public function getSemester($periode)
+    {
+        $periode = $this->input->post('periode');
+        $company = $this->ion_auth->user()->row()->company;
+        $this->db->select('s.idsemester,s.nama_semester, s.status');
+        $this->db->from('tbl_semester s');
+        $this->db->join('tbl_periode p', 'p.idperiode = s.idperiode');
+        $this->db->where('p.idperiode', $periode);
+        // $this->db->where('s.status', 1);
+        // if ($company <> 'ADMIN') {
+        //     $this->db->where('u.idunit', $company);
+        // }
+        return $this->db->get()->result();
+    }
 
     function search_idperson($title)
     {

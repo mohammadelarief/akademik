@@ -136,6 +136,14 @@ class Siswa extends CI_Controller
         echo json_encode($data);
     }
 
+    function get_semester()
+    {
+        $periode = $this->input->post('periode');
+        // print_r($idunit);
+        $data = $this->Siswa_model->getSemester($periode);
+        echo json_encode($data);
+    }
+
     function get_autocomplete()
     {
         if (isset($_GET['term'])) {

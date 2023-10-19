@@ -153,7 +153,7 @@
         prd = $("#idperiode").val();
         if (unit == 'all') {
             alertify.set('notifier', 'position', 'top-right');
-            alertify.success('<a style="color:white">Silahkan Pilih Unit Dahulu</a>');
+            alertify.error('<a style="color:white">Silahkan Pilih Unit Dahulu</a>');
         } else {
             $('#ModalaForm').modal('show');
             $('#form')[0].reset();
@@ -386,5 +386,52 @@
             });
             $("#filter_get").click();
         });
+        populateSemesterSelect();
+        $("#idperiode").change(function() {
+            populateSemesterSelect();
+        });
+
+        function populateSemesterSelect() {
+            prd = $("#idperiode").val();
+            $.ajax({
+                url: "<?php echo base_url(); ?>siswa/get_semester",
+                method: "POST",
+                data: {
+                    periode: prd
+                },
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    var i;
+
+                    // Tambahkan opsi default dengan status 1
+                    var defaultOption = data.find(function(item) {
+                        return item.status == 1;
+                    });
+
+                    if (defaultOption) {
+                        html += '<option value=' + defaultOption.idsemester + ' selected="selected">' + defaultOption.nama_semester + '</option>';
+                    }
+
+                    // Tambahkan opsi lainnya
+                    for (i = 0; i < data.length; i++) {
+                        if (data[i].status != 1) {
+                            html += '<option value=' + data[i].idsemester + '>' + data[i].nama_semester + '</option>';
+                        }
+                    }
+
+                    if (html === '') {
+                        // Jika data kosong, nonaktifkan elemen <select>
+                        $('#idsemester').prop('disabled', true);
+                        html = '<option value="" disabled selected>Tambahkan data semester</option>';
+                    } else {
+                        // Jika ada data, aktifkan elemen <select>
+                        $('#idsemester').prop('disabled', false);
+                    }
+                    $('#idsemester').html(html);
+                }
+            });
+        }
     });
 </script>

@@ -21,7 +21,7 @@ if (!function_exists('_unix_id')) {
         return $result_string;
     }
 }
-if (!function_exists('cmb_periode')) {
+if (!function_exists('cmb_where')) {
     function cmb_where($name, $table, $field, $pk, $selected = null, $where = null, $order = null)
     {
         $ci = get_instance();
@@ -77,6 +77,40 @@ if (!function_exists('cmb_filter')) {
             $cmb .= ">" .  strtoupper($d->$field) . "</option>";
         }
         $cmb .= "</select>";
+        return $cmb;
+    }
+}
+if (!function_exists('cmb_periode')) {
+    function cmb_periode($name, $table, $field, $pk, $selected = null, $order = null)
+    {
+        $ci = get_instance();
+        $cmb = '<select class="form-control filter select2" id="' . $pk . '" name="' . $name . '" style="width: 100%;">';
+        if ($order) {
+        }
+        $ci->db->order_by($pk, $order);
+        $data = $ci->db->get($table)->result();
+        $default_option = null;
+        foreach ($data as $d) {
+            if ($d->aktif == 1) {
+                $default_option = $d;
+                break;
+            }
+        }
+
+        if ($default_option) {
+            $cmb .= "\n<option value='" . $default_option->$pk . "'";
+            $cmb .= ($selected == $default_option->$pk) ? " selected='selected'" : '';
+            $cmb .= ">" . strtoupper($default_option->$field) . "</option>";
+        }
+        foreach ($data as $d) {
+            // Jangan tambahkan opsi default kecuali yang sudah ditambahkan di atas
+            if ($d->aktif != 1) {
+                $cmb .= "\n<option value='" . $d->$pk . "'";
+                $cmb .= ($selected == $d->$pk) ? " selected='selected'" : '';
+                $cmb .= ">" . strtoupper($d->$field) . "</option>";
+            }
+        }
+        $cmb .= "\n</select>\n";
         return $cmb;
     }
 }
